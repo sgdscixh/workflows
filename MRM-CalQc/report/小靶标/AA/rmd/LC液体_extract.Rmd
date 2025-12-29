@@ -1,0 +1,4 @@
+
+***液体样本处理步骤（Metabolites Extraction）：***
+
+The sample was vortexed for 30 s. A 50 μL sample was taken to an Eppendorf tube. A 200 μL aliquot of the extract solvent (acetonitrile-methanol, v:v=1:1, containing isotopically-labelled internal standard mixture, precooled at -40 ℃) was added. The sample was vortexed for 30 s and sonicated for 15 min in ice-water bath, followed by incubation at -40 ℃ for one hour and centrifugation at 12000 rpm (RCF=13800(×g), R= 8.6cm) and 4 ℃ for 15 min. The  supernatant was transferred to an auto-sampler vial, and then diluted 10 times, vortexed for 30 s to mix for UHPLC-MS/MS analysis.

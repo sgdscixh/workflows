@@ -1,0 +1,17 @@
+
+
+### 上机检测
+
+1)  **液相条件：**
+
+本项目使用安捷伦液相超高效液相色谱仪，通过液相色谱柱对目标化合物进行色谱分离。
+
+RP液相色谱A相为H2O:ACN:MeOH=1:1:1,v/v/v，其中含7 mmol/L乙酸铵；B相为异丙醇溶液，其中含7 mmol/L乙酸铵。通过Kinetex C18 (2.1 mm × 100 mm, 2.6 μm , Phenomenex, USA) 液相色谱柱对目标化合物进行色谱分离。流动相流速：0.35 mL/min，柱温：45 ℃，样品盘温度：10 ℃，进样体积：1 μL。
+
+HILIC液相色谱A相为 H2O:ACN=1:1,v/v，其中含2 mmol/L乙酸铵；B相为 DCM:ACN=1:13,v/v，其中含2 mmol/L乙酸铵。通过Luna NH2 (Amino) 3μm（2x100 mm, 3 μm, Phenomenex, USA）液相色谱柱对目标化合物进行色谱分离。流动相流速：0.7 mL/min，柱温：40 ℃，样品盘温度：10 ℃，进样体积：1 μL。
+
+2) **质谱条件：**
+
+数据采集时，以多反应监测(MRM)模式进行质谱分析。离子源参数如下：IonSpray Voltage: +3000/-3000 V,Curtain Gas: 35 psi, Temperature: (正模式325℃,负模式550℃), Ion Source Gas 1:40 psi, Ion Source Gas 2: 70 psi。
+
+质谱数据采集及目标化合物定量分析工作均通过SCIEX OS（3.3.1）和自动化分析软件 BIOTREE BioBud (v2.0.4)来完成。

@@ -1,0 +1,9 @@
+## 英文参考步骤
+
+***固体样本处理步骤：***
+
+Take sample into the 2 mL EP tubes, extracted with 1 mL H2O, vortex mixing for 10 s. Homogenized in ball mill for 4 min at 40 Hz, then ultrasound treated for 5 min (incubated in ice water)，repeat 3 times. Centrifuge for 20 min at 5000 rpm, 4 °C. Transfer the supernatant 0.8 mL into a fresh 2 mL EP tubes; Add 0.1 mL 50 % H2SO4 and 0.8 mL of extracting solution (25 mg/L stock in methyl tert-butyl ether) as internal standard, vortex mixing for 10 s, oscillations in 10 min, then ultrasound treated for 10 min (incubated in ice water). Centrifuge for 15 min at 10000 rpm, 4 °C. Keep at −20 °C for 30 min. Transfer the supernatant into a fresh 2 mL glass vial, for GC-MS analysis.
+
+***仪器条件（LC-MS Analysis）***
+
+Agilent GC7890B-5977B gas chromatography-mass spectrometer. The system utilized a HP-FFAP capillary column. A 1 μL aliquot of the analyte was injected in split mode (5:1). Helium was used as the carrier gas, the front inlet purge flow was 3 mL min−1, and the gas flow rate through the column was 1.2 mL min−1. The initial temperature was kept at 50 °C for 1 min, then raised to 150 °C at a rate of 50 °C min−1 for 1 min, then raised to 170 °C at a rate of 10 °C min−1 for 0 min,then raised to 225 °C at a rate of 25 °C min−1 for 1 min,then raised to 240 °C at a rate of 40 °C min−1 for 1 min. The injection, transfer line, quad and ion source temperatures were 220 °C, 240 °C, 150 °C and 240 °C. The energy was -70 eV in electron impact mode.

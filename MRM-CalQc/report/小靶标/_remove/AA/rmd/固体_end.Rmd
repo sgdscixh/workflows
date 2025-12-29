@@ -1,0 +1,92 @@
+
+### 样本中目标代谢物检测结果
+
+样本中各目标代谢物的定量结果见`r ifelse(file.exists(paste0(l.a$outDir, "/Table S4-Recovery and RSD.xlsx")), 'Table S5', 'Table S4')`。
+
+**计算公式：C~M~[nmol/g] = C~C~[nmol/L] * V~E~[µL] * DF / m[mg] / 1000**
+
+
+式中：
+
+CC (Calculated Concentration, nmol/L)为计算浓度，即样本数据代入标曲计算浓度；CM (Metabolite Concentration, nmol/g)为样品中目标代谢物含量，等于计算浓度CC (Calculated Concentration, nmol/L)乘以提取液体积VE (Extration Volumn, µL)，乘以稀释因子 DF (Dilution Factor)，除以样品质量m (mg)，除以1000 (单位换算，mg/g)。0表示目标化合物在该样本中无检出。
+
+
+<div style="page-break-before: always;" />
+
+## 实验小结
+
+本项目采用UHPLC-MRM-MS/MS的方法，采用内标法，针对样品中的(1) 1-Methyl-L-histidine, (2) 3-Methyl-L-histidine, (3) 4-Aminobutyric acid, (4) 4-Hydroxyproline, (5) 5-Hydroxylysine, (6) beta-Alanine, (7) Glycine, (8) L-Alanine, (9) L-Arginine, (10) L-Aspartic acid, (11) L-Citrulline, (12) L-Glutamic acid, (13) L-Glutamine, (14) L-Histidine, (15) L-Methionine, (16) L-Ornithine, (17) L-Phenylalanine, (18) L-Proline, (19) L-Serine, (20) L-Threonine, (21) L-Tryptophan, (22) L-Tyrosine, (23) L-Valine, (24) L-Asparagine和(25) L-Lysine共25种目标代谢物，共计完成`r sum(data_group[2, -1])`例`r gsub("样本.*", "", headMessage["项目名称", 1])`样本的分析检测。
+
+<div style="page-break-before: always;" />
+
+## 英文参考步骤
+
+***固体样本处理步骤（Metabolites Extraction）：***
+
+An aliquot of each individual sample was precisely weighed and transferred to an Eppendorf tube. After adding two small steel balls and 1000 μL extraction solution (precooled at -40 ℃, acetonitrile-methanol-water, 2:2:1, containing isotopically-labelled internal standard mixture), the samples were vortexed for 30 s, homogenized at 40 Hz for 4 min, and sonicated for 5 min in ice-water bath. The homogenate and sonicate circle were repeated for 3 times, followed by incubation at -40 ℃ for one hour and centrifugation at 12000 rpm (RCF=13800(×g),R= 8.6cm) for 15 min at 4 ℃. The supernatant was transferred to an auto-sampler vial for UHPLC-MS/MS analysis.
+
+***标准溶液配制（Standard Solution Preparation）：***
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 10 mmol/L. An aliquot of each of the stock solutions was transferred to a 10 mL flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+***上机检测（UHPLC-MRM-MS Analysis）：***
+
+The UHPLC separation was carried out using an Agilent 1290 Infinity II series UHPLC System (Agilent Technologies), equipped with a Waters ACQUITY UPLC BEH Amide column (100 × 2.1 mm, 1.7 μm). The mobile phase A was 1% formic acid in water, and the mobile phase B was 1% formic acid in acetonitrile. The column temperature was set at 35 ℃. The auto-sampler temperature was set at 4 ℃ and the injection volume was 1 μL.
+
+An Agilent 6460 triple quadrupole mass spectrometer (Agilent Technologies), equipped with an AJS electrospray ionization (AJS-ESI) interface, was applied for assay development. Typical ion source parameters were: capillary voltage = +4000/-3500 V, Nozzle Voltage = +500/-500 V, gas (N2) temperature = 300 ℃, gas (N2) flow = 5 L/min, sheath gas (N2) temperature = 250 ℃, sheath gas flow = 11 L/min, nebulizer = 45 psi.
+
+The MRM parameters for each of the targeted analytes were optimized using flow injection analysis, by injecting the standard solutions of the individual analytes, into the API source of the mass spectrometer. Several most sensitive transitions were used in the MRM scan mode to optimize the collision energy for each Q1/Q3 pair (Table S2). Among the optimized MRM transitions per analyte, the Q1/Q3 pairs that showed the highest sensitivity and selectivity were selected as ‘quantifier’ for quantitative monitoring. The additional transitions acted as ‘qualifier’ for the purpose of verifying the identity of the target analytes.
+
+Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies) and BioBud (v2.0.3, BIOTREE) were employed for MRM data acquisition and processing.
+
+***校准曲线（Calibration Curves）：***
+
+Calibration solutions were subjected to UPLC-MRM-MS/MS analysis using the methods described above. Figure S1-Calibration summarizes the results for the calibration curves where y is the ratio of the peak area of the target compound to the corresponding internal standard, and x is the concentration (nmol/L) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80–120%. Detailed calibration curves for individual analytes are shown in Figure S1-Calibration.
+
+***方法检出限及定量限（Limit of Detection (LOD) and Limit of Quantitation (LOQ)）：***
+
+The calibration standard solution was diluted stepwise, with a dilution factor of 2. These standard solutions were subjected to UHPLC-MRM-MS analysis. The signal-to-noise ratios (S/N) were used to determine the lower limits of detection (LLODs) and lower limits of quantitation (LLOQs). The LLODs and LLOQs were defined as the analyte concentrations that led to peaks with signal-to-noise ratios (S/N) of 3 and 10 respectively, according to the US FDA guideline for bioanalytical method validation.
+
+```{r echo=FALSE,warning=FALSE,eval=file.exists(paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx"))}
+library(pander)
+pander(
+'
+***方法精密度及准确度 (Precision and Accuracy)：***\n\n
+The precision of the quantitation was measured as the relative standard deviation (RSD), determined by injecting analytical replicates of a QC sample. The accuracy of quantitation was measured as the analytical Accuracy of the QC sample, determined as [(mean observed concentration) / (spiked concentration)] × 100%.
+'
+)
+```
+
+
+
+***色谱分离（LC Separation）：***
+
+Figure 1 shows the extracted ion chromatographs (EICs) from a standard solution (Figure 1A) and a sample (Figure 1B) of the targeted analytes under the optimal conditions. As can be seen from this figure, (i) all of the analytes showed symmetrical peak shapes, (ii) baseline separations were obtained, (iii) and the retention time and peak shapes for all of the analytes showed good correlation between the standard solution and the real sample.
+
+***方法定量参数（Analysis Metrics）：***
+
+Table S3 lists the resulting lower-limits of detection and quantitation (LLODs and LLOQs), and the LLODs ranged from `r ifelse(min(data_S3$rawy)<1, min(data_S3$rawy),min(data_S3$rawy))` to `r ifelse(max(data_S3$rawy)<1, max(data_S3$rawy),max(data_S3$rawy))` nmol/L, the LLOQs ranged from `r ifelse(min(data_S3$xmin)<1, min(data_S3$xmin),min(data_S3$xmin))` to `r ifelse(max(data_S3$xmin)<1, max(data_S3$xmin),max(data_S3$xmin))` nmol/L for all the analytes. Correlation coefficients (R^2^) of regression fitting were above `r min(data_S3$score)` for all the analytes, indicating a good quantitative relationship between the MS responses and the analyte concentrations, which was satisfying for targeted metabolomics analysis (Figure S1-Calibration).
+
+```{r echo=FALSE,warning=FALSE,eval=file.exists(paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx"))}
+library(pander)
+
+info = 'Table S4 lists the analytical recoveries and relative standard deviations of the QC samples, with %s technical replicates. The recoveries determined were %s – %s for all the analytes, with all the RSDs below %s (n = %s). The analysis metrics indicated that the method allowed accurate quantitation of the targeted metabolites in the biological sample, in the concentration range described as above.'
+
+pander(
+  sprintf(
+    info, 
+    headMessage["QC样品重复进样次数", 1],
+    paste0(min(data_S4$Accuracy),'%'),
+    paste0(max(data_S4$Accuracy),'%'),
+    paste0(max(data_S4$RSD),'%'),
+    headMessage["QC样品重复进样次数", 1]
+    )
+)
+
+
+```
+
+
+***样本中目标代谢物检测结果（Quantification Results）：***
+
+The quantification results were shown in `r ifelse(file.exists(paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx")), 'Table S5', 'Table S4')`. CC (Calculated Concentration, nmol/L) is the concentration calculated by calibration curve. CM (Metabolite Concentration, nmol/g) is the content of target metabolites in the sample. It equal to calculated concentration (CC, nmol/L) multiplied by extration volumn (VE, µL), multiplied by dilution factor (DF), divided by sample mass (m, mg), divided by 1000 (for unit conversion, mg/g). "0" means that the targeted metabolites were not detectable in the corresponding sample.

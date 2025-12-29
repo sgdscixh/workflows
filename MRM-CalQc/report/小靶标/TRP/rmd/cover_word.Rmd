@@ -1,0 +1,29 @@
+
+
+#### **实验检测报告**
+#### **ASSAY Report**
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+##### 项目编号：`r project_code`
+
+##### 项目名称：`r project_name`
+
+##### 客户单位：`r custom_inst`
+
+##### 客户姓名：`r custom_name`
+
+##### 完成时间：`r Sys.Date()`
+
+
+\newpage

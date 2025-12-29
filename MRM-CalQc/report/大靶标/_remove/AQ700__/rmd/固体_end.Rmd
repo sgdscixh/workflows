@@ -1,0 +1,10 @@
+
+### 样本中目标代谢物检测结果
+
+**计算公式：C~M~[nmol/g] = C~C~[nmol/L] * V~E~[µL] / m[mg] / 1000**
+
+
+式中：
+
+C~C~ (Calculated Concentration, nmol/L)为计算浓度，即样本数据代入标曲计算浓度；C~M~ (Metabolite Concentration, nmol/g)为样品中目标代谢物含量，等于计算浓度C~C~ (Calculated Concentration, nmol/L)乘以提取液体积V~E~ (Extration Volumn, µL)，除以样品质量m (mg)，除以1000。“0”表示目标化合物在该样本中无检出。
+

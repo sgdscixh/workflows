@@ -1,0 +1,101 @@
+
+## 英文参考步骤
+
+### 样本处理步骤(Metabolites Extraction)
+
+```{r type-extract, child=glue::glue("{rep}/{rpt}/rmd/{spl}_extract.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow, spl=l.a$spl_type)}
+### 样本中目标代谢物检测结果
+
+```
+
+
+
+### 标准溶液配制 (Standard Solution Preparation)
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 10 mmol/L. An aliquot of each of the stock solutions was transferred to a 10 mL flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+
+
+
+### 仪器条件 (Instrument Parameter)
+
+The UHPLC separation was carried out using an Agilent 1290 Infinity II series UHPLC System (Agilent Technologies), equipped with a Waters ACQUITY UPLC BEH Amide column (100 × 2.1 mm, 1.7 μm). The mobile phase A was 1% formic acid in water, and the mobile phase B was 1% formic acid in acetonitrile. The column temperature was set at 35 ℃. The auto-sampler temperature was set at 4 ℃ and the injection volume was 1 μL.
+
+An Agilent 6460 triple quadrupole mass spectrometer (Agilent Technologies), equipped with an AJS electrospray ionization (AJS-ESI) interface, was applied for assay development. Typical ion source parameters were: capillary voltage = +4000/-3500 V, Nozzle Voltage = +500/-500 V, gas (N2) temperature = 300 ℃, gas (N2) flow = 5 L/min, sheath gas (N2) temperature = 250 ℃, sheath gas flow = 11 L/min, nebulizer = 45 psi.
+
+
+The MRM parameters for each of the targeted analytes were optimized using flow injection analysis, by injecting the standard solutions of the individual analytes, into the ESI source of the mass spectrometer. Several most sensitive transitions were used in the MRM scan mode to optimize the collision energy for each Q1/Q3 pair (Table S2). Among the optimized MRM transitions per analyte, the Q1/Q3 pairs that showed the highest sensitivity and selectivity were selected as "quantifier" for quantitative monitoring. The additional transitions acted as "qualifier" for the purpose of verifying the identity of the target analytes.
+
+Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies) and Biotree BioBud (v2.0.3) were employed for MRM data acquisition.
+
+
+### 标准曲线 (Standard Solution Preparation)
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 10 mmol/L. An aliquot of each of the stock solutions was transferred to a 5 mL flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+Calibration solutions were subjected to UHPLC-MRM analysis using the methods described above. Figure S1-Calibration summarizes the results for the calibration curves where y i s the ratio of the peak area of the target compound to the corresponding internal standard, and x i s the concentration (ng/mL) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80 -120%. Detailed calibration curves for individual analytes are shown in Figure S1-Calibration.
+
+### 方法检出限及定量限 (LOD and LOQ)
+
+The calibration standard solution was diluted stepwise, with a dilution factor of 2.
+These standard solutions were subjected to UHPLC-MRM-MS analysis. The signal-to-noise ratios (S/N) were used to determine the lower limits of detection  (LODs) and lower limits of quantitation (LOQs). The LODs and LOQs were defined as the analyte concentrations that led to peaks with signal-to-noise ratios (S/N) of 3 and 10, respectively, according to the US FDA guideline for bioanalytical method validation.
+
+
+```{r acc-rsd-en, eval=l.a$has_qc}
+"
+### 方法精密度及准确度(Precision and Accuracy)
+
+The precision of the quantitation was measured as the relative standard deviation (RSD), determined by injecting analytical replicates of a QC sample. The accuracy of quantitation was calculated as [(mean observed concentration) / (Theoretical concentration)] × 100%.
+" %>% pander()
+
+```
+
+
+### 色谱分离 (LC Separation)
+
+The extracted ion chromatographs (EICs) plots from a standard solution and a sample of the targeted analytes under the optimal conditions. As can be seen from this figure,  (i) all of the analytes showed symmetrical peak shapes,  (ii) baseline separations were obtained, (iii) and the retention time and peak shapes for all of the analytes showed good correlation between the standard solution and the real sample.
+
+### 方法定量参数 (Analysis Metrics)
+
+Table S3 lists the resulting lower-limits of detection and quantitation  (LODs and LOQs), and the LODs ranged from `r llod_0` to `r llod_1` nmol/L, the LOQs ranged from `r lloq_0` to `r lloq_1` nmol/L for all the analytes. Correlation coefficients (R2) of regression fitting were above `r scores` for all the analytes, indicating a good quantitative relationship between the MS responses and the analyte concentrations, which was satisfying for targeted metabolomics analysis (see Figure S1-Calibration).
+
+
+```{r qc-acc-en, echo=FALSE, warning=FALSE, eval=l.a$has_qc}
+pander(msg_en)
+```
+
+
+The analysis metrics indicated that the method allowed accurate quantitation of the targeted metabolites in the biological sample, in the concentration range described as above.
+
+
+### 样本中目标代谢物检测结果(Quantification Results)
+
+**Solid**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/g) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by sample mass m (mg), divided by 1,000.
+
+
+**Liquid**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/L) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by V~S~ (Sample Volume, mL).
+
+
+**Protein mass**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/g) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by protein content of the sample (m[mg protein), divided by 1,000.
+
+
+
+**Cell count**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/L) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by number of cells of the sample (10^7 Cell), , divided by 1,000,000.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+
+
+```{=latex}
+
+
+\thispagestyle{empty}
+\settitlebackground
+
+\vspace*{1cm}
+\noindent {\Large 项目编号：`r project_code`}
+
+\vspace{7cm}
+
+\hspace{5em} {\Large 项目名称：`r project_name`}
+
+\hspace{5em} {\Large 客户单位：`r custom_inst`}
+
+\hspace{5em} {\Large 客户姓名：`r custom_name`}
+
+\hspace{5em} {\Large 完成时间：\today}
+
+
+\clearpage
+
+
+\pagestyle{fancy}
+\setcounter{page}{1}
+\tableofcontents
+\clearpage
+
+
+```
+
+

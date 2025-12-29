@@ -1,0 +1,22 @@
+
+### 上机检测
+
+岛津GC2030-QP2020 NX气相色谱质谱联用仪配有Agilent HP-FFAP毛细管(30m×250μm×0.25μm, J&W Scientific, Folsom, CA, USA)，GC-MS具体分析条件如下：
+
+```{r echo=FALSE,warning=FALSE}
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("仪器参数")
+
+table <- read.xlsx(other_table, sheet="仪器参数", colNames = T, rowNames = F)
+pander(table)
+```
+
+
+### 标准曲线
+
+采用前文所描述的方法对校准溶液进行GC-MS分析。校准曲线如Figure S1-Calibration所示，y表示目标化合物和对应内标物的峰面积之比，x表示目标化合物的浓度(nmol/L)。若某一校准浓度Accuracy超出80-120%范围，则将该浓度校准点排除。
+
+
+<div style="page-break-before: always;" />

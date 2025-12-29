@@ -1,0 +1,199 @@
+---
+output:
+    html_document: 
+      # theme: cerulean
+      # toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+            x)
+  } else x
+}
+
+```
+
+# 样本基本信息
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+data_group <- read.xlsx(paste0(l.a$inDir,"/", grep('headMessage', list.files(l.a$inDir), value = T)), sheet = 2)
+
+if(sum(colnames(data_group) == '组别') > 1) {
+  sum_spl <- sum(data_group[,colnames(data_group) == '样本数量'], na.rm = T)
+  sum_spl2 <- sum(data_group[,colnames(data_group) == '实验检测'], na.rm = T)
+} else {
+  sum_spl <- sum(as.numeric(unlist(data_group[data_group$组别 == '样本数量', -1])), na.rm = T)
+  sum_spl2 <- sum(as.numeric(unlist(data_group[data_group$组别 == '实验检测', -1])), na.rm = T)
+} 
+
+str <- paste0("共收到客户提供的", sum_spl, "例", gsub("样本.*", "", headMessage["项目名称", 1]), "样本，实际检测",sum_spl2, "例", gsub("样本.*", "", headMessage["项目名称", 1]), "样本。")
+pander(str)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("样本信息表")
+pander(data_group)
+```
+
+***注：****①样本收到后，立即保存在-80℃低温冰箱中，直至实验检测；②为了更好地进行实验，对样本进行了重新编号，详细见“样本编号对应表”（若未重新编号则无该表）。*
+<div style="page-break-before: avoid;" />
+# 实验信息
+
+## 仪器及试剂
+
+### 实验标准物质及试剂
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+
+table <- read.xlsx(paste0(l.a$repDir, "/SCFA/others/", "Table.xlsx"),sheet="实验试剂列表",colNames = T,rowNames = F)
+set.caption("实验试剂列表")
+pander(table)
+
+```
+
+### 实验仪器
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("实验仪器列表")
+table <- read.xlsx(paste0(l.a$repDir, "/SCFA/others/", "Table.xlsx"),sheet="实验仪器列表",colNames = T,rowNames = F)
+pander(table)
+```
+
+<div style="page-break-before: always;" />
+
+## 实验方法
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- paste0("![实验分析流程图](", l.a$repDir, "/SCFA/others/", "实验分析流程图.jpg)")
+pander(tx)
+```
+
+<div style="page-break-before: always;" />
+
+### 样本预处理
+
+1. 取样本于2 mL EP管中，加入1 mL纯水，涡旋10 s；   
+2. 加入钢珠，40 Hz研磨仪处理4 min，超声5 min（冰水浴），重复3次；
+3. 将样本4 ℃离心，5000 rpm离心20 min；
+4. 移取0.8 mL上清液于2 mL EP管中；
+5. 加入0.1 mL 50% H2SO4，加入0.8 mL提取液（含内标2-甲基戊酸，25 mg/L，甲基叔丁基醚），涡旋10 s, 振荡10 min，超声10 min（冰水浴）；
+6. -20 ℃静置30 min；
+7. 在将样本4 ℃离心，10000 rpm离心15 min；
+8. 取出上清于进样瓶中，GC-MS检测。
+
+### 上机检测
+
+Agilent GC7890B-5977B气相色谱质谱联用仪配有Agilent HP-FFAP毛细管(30m×250μm×0.25μm,
+
+J&W Scientific, Folsom, CA, USA)，GC-MS具体分析条件如下：
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("仪器参数")
+
+table <- read.xlsx(paste0(l.a$repDir, "/SCFA/others/", "Table.xlsx"),sheet="仪器参数",colNames = T,rowNames = F)
+pander(table)
+```
+
+<div style="page-break-before: always;" />
+
+### 标准曲线
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("保留时间指数表")
+
+table <- data_bq_final
+pander(table)
+```
+
+## 实验结果
+
+```{r echo=FALSE,warning=FALSE}
+pic_tic_qc <- grep("QC", list.files(paste0(l.a$resDir,"/figures/svg")), value=T, ignore.case = T)[1]
+tx <- paste0("![目标化合物标准品GC-MS SIM离子流图](", paste0(l.a$resDir,"/figures/svg/", pic_tic_qc),")")
+pander(tx)
+
+```
+
+<div style="page-break-before: always;" />
+
+### 质量控制
+
+每10个样本插入一个QC标样，通过QC标样的浓度回读判断标准曲线的准确性和仪器系统的稳定性，若QC准确度为80%~120%，则说明实验过程在控制范围内。QC的RSD小于等于20%。
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("QC准确度")
+
+table <- data_rec_final
+pander(table)
+```
+
+### 定量结果
+
+<!-- 计算公式：$$C_{con} = \frac{C_s * V1 * V3}{M*V2}*1000$$ -->
+
+计算公式: C~(con)~ = C~s~ * V1 * V3 / M * V2
+
+C~(con)~：样本中目标化合物的含量，μg/mg；
+
+C~s~：提取液中目标化合物浓度，mg/L；
+
+V1：加入提取液溶液体积，mL；
+
+V2：取出纯水上清液体积，mL；
+
+V3：加入纯水体积，mL；
+
+M：称样量，mg.
+
+
+## 实验小结
+
+1、	样本质量：良好；
+
+2、	实验方法：良好；
+
+3、	系统稳定性：良好。
+
+<div style="page-break-before: always;" />
+
+## 英文参考步骤
+
+***固体样本处理步骤：***
+
+Take sample into the 2 mL EP tubes, extracted with 1 mL H2O, vortex mixing for 10 s. Homogenized in ball mill for 4 min at 40 Hz, then ultrasound treated for 5 min (incubated in ice water)，repeat 3 times. Centrifuge for 20 min at 5000 rpm, 4 °C. Transfer the supernatant 0.8 mL into a fresh 2 mL EP tubes; Add 0.1 mL 50 % H2SO4 and 0.8 mL of extracting solution (25 mg/L stock in methyl tert-butyl ether) as internal standard, vortex mixing for 10 s, oscillations in 10 min, then ultrasound treated for 10 min (incubated in ice water). Centrifuge for 15 min at 10000 rpm, 4 °C. Keep at −20 °C for 30 min. Transfer the supernatant into a fresh 2 mL glass vial, for GC-MS analysis.
+
+***仪器条件（LC-MS Analysis）***
+
+Agilent GC7890B-5977B gas chromatography-mass spectrometer. The system utilized a HP-FFAP capillary column. A 1 μL aliquot of the analyte was injected in split mode (5:1). Helium was used as the carrier gas, the front inlet purge flow was 3 mL min−1, and the gas flow rate through the column was 1.2 mL min−1. The initial temperature was kept at 50 °C for 1 min, then raised to 150 °C at a rate of 50 °C min−1 for 1 min, then raised to 170 °C at a rate of 10 °C min−1 for 0 min,then raised to 225 °C at a rate of 25 °C min−1 for 1 min,then raised to 240 °C at a rate of 40 °C min−1 for 1 min. The injection, transfer line, quad and ion source temperatures were 220 °C, 240 °C, 150 °C and 240 °C. The energy was -70 eV in electron impact mode.

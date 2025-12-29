@@ -1,0 +1,135 @@
+<div style="page-break-before: always;" />
+
+```{r params}
+library(tidyverse)
+
+spl_info <- l.a$spl_info
+spl_name_qc <- spl_info %>% filter(sample_type == "QC") %>% select(sample_name) %>% .[[1]]
+spl_name_sp <- spl_info %>% filter(sample_type == "SPL") %>% select(sample_name) %>% .[[1]]
+
+
+fig_qc_0 <- sprintf("%s/figures/TIC/QC/%s.svg", l.a$resDir, spl_name_qc)
+fig_qc_1 <- gsub('/RP/', '/HILIC/', fig_qc_0)
+fig_qc_2 <- gsub('/HILIC/', '/RP/', fig_qc_0)
+
+fig_sp_0 <- sprintf("%s/figures/TIC/QC/%s.svg", l.a$resDir, spl_name_sp)
+fig_sp_1 <- gsub('/RP/', '/HILIC/', fig_sp_0)
+fig_sp_2 <- gsub('/HILIC/', '/RP/', fig_sp_0)
+
+
+fig_rt_0 <- sprintf("%s/figures/IS/", l.a$resDir)
+fig_name_n <- grep('Negative', list.files(fig_rt_0, pattern = '.png'), value=T, ignore.case = T)[1]
+fig_name_p <- fig_name_n %>% gsub('Negative$', 'Positive', .)
+
+fig_rt_0n <- glue::glue("{path}/{name}", path=fig_rt_0, name=fig_name_n)
+fig_rt_0p <- glue::glue("{path}/{name}", path=fig_rt_0, name=fig_name_p)
+
+fig_rt_1n <- gsub('/RP/', '/HILIC/', fig_rt_0n)
+fig_rt_2n <- gsub('/HILIC/', '/RP/', fig_rt_0n)
+
+fig_rt_1p <- gsub('/RP/', '/HILIC/', fig_rt_0p)
+fig_rt_2p <- gsub('/HILIC/', '/RP/', fig_rt_0p)
+
+
+```
+
+
+
+## 实验结果
+
+### 色谱分离
+
+通过总离子流图（TIC）可大致看到样本出峰和响应情况，横坐标为保留时间，纵坐标为物质的响应强度。 
+
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![HILIC样本 %s TIC图](%s)", spl_name_qc, fig_sp_1)
+pander(tx)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![RP样本 %s TIC图](%s)", spl_name_qc, fig_sp_2)
+pander(tx)
+
+```
+
+
+<div style="page-break-before: always;" />
+### 质量控制
+
+1、过程质控
+
+在检测过程中实时地监控仪器稳定性、信号是否正常十分重要。以混合样本溶液作为质控样本，在样本检测过程中每隔10个样本插入一个QC质控样本，通过对质控样本的数据进行分析来判断最终采集数据的质量，以便及时发现异常，尽早将问题排除，保证最终采集数据的质量。
+
+①	 内标保留时间质控
+
+内标保留时间越一致，说明仪器越稳定。由图4-5和图6-7可以看到内标在样品中的保留时间质控图，所有进样样品和QC保留时间与预期保留时间均在±12S以内。说明仪器数据采集稳定性很好。
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC和样本负离子内标保留时间质控图(HILIC)](%s)", fig_rt_1n)
+pander(tx)
+```
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC和样本正离子内标保留时间质控图(HILIC)](%s)", fig_rt_1p)
+pander(tx)
+```
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC和样本负离子内标保留时间质控图(RP)](%s)", fig_rt_2n)
+pander(tx)
+```
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC和样本正离子内标保留时间质控图(RP)](%s)", fig_rt_2p)
+pander(tx)
+```
+
+
+
+②	QC样本相关性
+
+QC样品相关性越接近于1（应大于0.8），说明整个方法稳定性越好数据质量越高。从图8-9我们可以看到QC样品相关性很高，说明本次实验数据质量很高。
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC样本相关性图(HILIC)](%s)/QC_corrplot_HILIC.jpg)", l.a$outDir)
+pander(tx)
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- sprintf("![QC样本相关性图(RP)](%s)/QC_corrplot_RP.jpg)", l.a$outDir)
+pander(tx)
+```
+
+2、内标质控
+
+① QC样品中内标响应稳定性
+
+内标为外源引入的同位素标记代谢物，QC样品中内标浓度相同，所以内标的响应差异越小（RSD≤20%），说明系统越稳定，数据质量越高。从表4中数据可以看到本次实验数据质量稳定。
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+# panderOptions('header.style','setext')
+set.caption("QC样品中内标响应稳定性表")
+
+table <- df_rsd_final
+pander(table)
+
+```
+
+### 标准曲线
+
+使用内标法建立标准曲线，横坐标为标准品浓度与内标浓度之比，纵坐标为标准品响应与内标响应之比，标准曲线相关系数满足>0.95，表示标准曲线定量准确可靠，具体线性方程表见附表。
+
+
+

@@ -1,0 +1,87 @@
+<div style="page-break-before: always;" />
+
+```{r params}
+library(tidyverse)
+# l.a = list()
+# s_file = "Y:\\gaoba\\CCM\\20250521\\RP\\BQ-rahila20250416-YJS-CM\\sampleInfo.xlsx"
+# l.a$spl_info <- readxl::read_xlsx(s_file)
+# 
+# l.a$resDir <- 'Y:\\gaoba\\CCM\\20250521\\RP\\BQ-rahila20250416-YJS-CM\\results'
+
+
+
+
+spl_info <- l.a$spl_info
+spl_name_qc <- spl_info %>% filter(sample_type == "QC") %>% select(sample_name) %>% .[[1]]
+spl_name_sp <- spl_info %>% filter(sample_type == "SPL") %>% select(sample_name) %>% .[[1]]
+
+
+fig_h_qc <- sprintf("%s/figures/svg/%s.svg", l.a$resDir, spl_name_qc)
+fig_r_qc <- gsub('/HILIC/', '/RP/', fig_h)
+
+fig_h_sp <- sprintf("%s/figures/svg/%s.svg", l.a$resDir, spl_name_sp)
+fig_r_sp <- gsub('/HILIC/', '/RP/', fig_h)
+
+
+```
+
+```{r }
+fig_r
+fig_h
+
+
+```
+
+
+## 实验结果
+
+### 色谱分离
+
+标准品溶液及样本提取离子色谱图(EIC)如图2和图3所示，从中可以看出： 一、本项目所采用分析方 法，所有目标化合物均呈现出对称的色谱峰；二、很好地实现了各个目标化合物的色谱分离；三、 目标化合物在生物样品与标准品溶液中的保留时间及色谱峰形均无明显差异。
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![标准品溶液%s (HILIC)](%s)", spl_name_qc, fig_h_qc)
+pander(tx)
+
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![标准品溶液%s (RP)](%s)", spl_name_qc, fig_r_qc)
+pander(tx)
+
+```
+
+
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![样本%s (HILIC)](%s)", spl_name_qc, fig_h_qc)
+pander(tx)
+
+```
+
+
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+
+tx <- sprintf("![样本%s (RP)](%s)", spl_name_sp, fig_r_sp)
+pander(tx)
+
+```
+
+
+### ⽅法定量参数
+
+目标化合物的定量参数见Table S3，各目标化合物的最低检出限(LLODs)在`r paste0(ifelse(min(data_S3$rawy)<1, signif(min(data_S3$rawy),2),round(min(data_S3$rawy),2)), '-', ifelse(max(data_S3$rawy)<1, signif(max(data_S3$rawy),2),round(max(data_S3$rawy),2)), ' ',l.a$unit_CC)`，最低定量限(LLOQs)在`r paste0(ifelse(min(data_S3$xmin)<1, signif(min(data_S3$xmin),2),round(min(data_S3$xmin),2)), '-', ifelse(max(data_S3$xmin)<1, signif(max(data_S3$xmin),2),round(max(data_S3$xmin),2)), ' ',l.a$unit_CC)` 之间；所有目标化合物的相关系数(R^2^)均大于`r round(min(data_S3$score),3)`，说明色谱峰峰面积与化合物浓度间呈良好的定量关系，可满足靶向代谢组学分析的要求(详细校准曲线见Figure S1-Calibration)。
+
+QC样品的准确度(Accuracy)及标准相对偏差(RSD)见Table S4，QC样品重复进样次数为3次。如表中所示，所有目标化合物的平均准确度在`r min(data_S4$Accuracy)`% -`r max(data_S4$Accuracy)`%之间，RSD小于30%的代谢物占比`r round(nrow(data_S4[data_S4$RSD < 30,]) / nrow(data_S4) * 100, 2)`%以上。
+
+以上数据表明，本方法能够在以上所示的浓度范围内，准确可靠地检测出样品中的目标代谢物含量。
+

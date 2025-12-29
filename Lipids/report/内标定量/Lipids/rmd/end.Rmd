@@ -1,0 +1,44 @@
+\newpage
+
+## 英文参考步骤（使用时英文方法需根据实际前处理进行调整）
+
+### Solid Sample (Feces, animal tissue, etc)
+
+20 mg of the sample was weighted on the dry ice to an EP tube. After the addition of 400 μL water, the samples were vortexed for 60 s, homogenized at 45 Hz for 4 min, and sonicated for 5 min in ice-water bath. The homogenate and sonicate circle was repeated for 3 times. The 100 μL homogenate was mixed with 100 μL water, and then 480 μL extract solution (MTBE: MeOH = 5: 1) containing internal standard was added. After vortexing for 60 s, the samples were sonicated for 10 min in ice-water bath. Then the samples were centrifuged at 3000 rpm for 15 min at 4 ℃. 250 μL of supernatant was transferred to a fresh tube. The rest of the sample was added with 250 μL of MTBE, followed with vortex, sonication and centrifugation, and another 250 μL of supernatant was taken out. This step was repeated once. And the supernatants were combined and dried in a vacuum concentrator at 37 ℃. Then, the dried samples were reconstituted in 100 μL of resuspension buffer (DCM: MeOH: H2O = 60: 30: 4.5), the samples were vortexed for 30 s and sonicated for 10 min in ice-water bath. The constitution was then centrifuged at 12000 rpm for 15 min at 4 ℃, and 30 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+
+### Liquid Sample (Serum, plasma, saliva, bacterial fluid, juice, etc)
+
+50 μL of the sample was mixed with 150 μL water, and then 480 μL extract solution (MTBE: MeOH = 5: 1) containing internal standard was added. After 60 s vortex, the samples were sonicated for 10 min in ice-water bath. Then the samples were centrifuged at 3000 rpm for 15 min at 4 ℃. 250 μL of supernatant was transferred to a fresh tube. The rest of the sample was added with 250 μL of MTBE, followed with vortex, sonication and centrifugation, and another 250 μL of supernatant was taken out. This step was repeated once. And the supernatants were combined and dried in a vacuum concentrator at 37 ℃. Then, the dried samples were reconstituted in 100 μL of resuspension buffer (DCM: MeOH: H2O = 60: 30: 4.5), the samples were vortexed for 30 s and sonicated for 10 min in ice-water bath. The constitution was then centrifuged at 12000 rpm for 15 min at 4 ℃, and 35 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+
+### Cell Sample
+
+#### Cell Count 
+
+The all cells sample were mixed with 200 μL water, the samples were vortexed for 60 s, freeze and thaw three times with liquid nitrogen, and sonicated for 20 min in ice-water bath. After the addition of 800 μL extract solution (MTBE: MeOH = 5: 1) containing internal standard. After 60 s vortex, the samples were sonicated for 10 min in ice-water bath. Then the samples were centrifuged at 3000 rpm for 15 min at 4 ℃. 500 μL of supernatant was transferred to a fresh tube. And dried in a vacuum concentrator at 37 ℃. Then, the dried samples were reconstituted in 150 μL of resuspension buffer (DCM: MeOH: H2O = 60: 30: 4.5), the samples were vortexed for 30 s and sonicated for 10 min in ice-water bath. The constitution was then centrifuged at 12000 rpm for 15 min at 4 ℃, and 70 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. 30 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. Pool equal amount of each sample as QC sample.
+
+#### BCA Assay
+
+The all cells sample were mixed with 250 μL water, the samples were vortexed for 60 s, freeze and thaw three times with liquid nitrogen, and sonicated for 20 min in ice-water bath, the 50 μL homogenate was taken for BCA quantification. The 200 μL homogenate was mixed with 800 μL extract solution（480μL of extraction solution containing internal standard;MTBE: MeOH = 5: 1). After 60 s vortex, the samples were sonicated for 10 min in ice-water bath. Then the samples were centrifuged at 3000 rpm for 15 min at 4 ℃. 500 μL of supernatant was transferred to a fresh tube. And dried in a vacuum concentrator at 37 ℃. Then, the dried samples were reconstituted in 150 μL of resuspension buffer (DCM: MeOH: H2O = 60: 30: 4.5), the samples were vortexed for 30 s and sonicated for 10 min in ice-water bath. The constitution was then centrifuged at 12000 rpm for 15 min at 4 ℃, and70 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. 30 μL of supernatant was transferred to a fresh glass vial for LC/MS analysis. Pool equal amount of each sample as QC sample.
+
+
+### 仪器条件 (Instrument Parameter)
+
+The UHPLC separation was carried out using an Nexera LC-40 series UHPLC System. The mobile phase A consisted of 40% water, 60% acetonitrile, and 10 mmol/L ammonium formate，and 0.1% acetic acid. The mobile phase B consisted of 10% acetonitrile and 90% isopropanol, and 10 mmol/L ammonium formate，and 0.1% acetic acid. The column temperature was 45 ℃. The auto-sampler temperature was 10 ℃, and the injection volume was 2 μL.
+
+A SCIEX Triple Quad™ 7500 mass spectrometer was applied for assay development. Typical ion source parameters were: IonSpray Voltage: +3500/-3000 V, Curtain Gas: 50 psi, Temperature: 400℃, Ion Source Gas 1:50 psi, Ion Source Gas 2: 50 psi.
+
+Before mass spectrometry analysis, the optimal Q1 / Q3 pair was selected for each target lipid, and its MRM parameters were optimized. Ion pairs were used for qualitative and quantitative analysis. The specific data are shown in the results table.
+
+Mass spectrum data acquisition and quantitative analysis of target compounds were completed by SCIEX OS (3.3.1) and automated analysis software BIOTREE BioBud (v2.0.4).
+
+# 参考文献 {-}
+
+1.  Dunn WB; Broadhurst D; Begley P; Zelena E; Francis-McIntyre S; Anderson N; Brown M; Knowles JD; Halsall A; Haselden JN; Nicholls AW; Wilson ID; Kell DB; Goodacre R; Human Serum Metabolome (HUSERMET) Consortium. Procedures for large-scale metabolic profiling of serum and plasma using gas chromatography and liquid chromatography coupled to mass spectrometry [J]. Nature Protocols, 2011, 6(7):1060-1083.
+
+2.  Want E J, Wilson I D, Helen G, et al. Global metabolic profiling procedures for urine using UPLC-MS. [J]. Nature Protocol, 2010, 5(6):1005-18.
+
+3.  Lam SM, Tian H, Shui G. Lipidomics, en route to accurate quantitation. Biochim Biophys Acta 2017; 1862(8): 752-61.
+
+4.  Tu J, Yin Y, Xu M, Wang, Zhu Z-J. Absolute quantitative lipidomics reveals lipidome-wide alterations in aging brain. Metabolomics 2017; 14(1).

@@ -1,0 +1,218 @@
+---
+output:
+    html_document: 
+      # theme: cerulean
+      # toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+            x)
+  } else x
+}
+
+```
+
+# 样本基本信息
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+data_group <- read.xlsx(paste0(l.a$inDir,"/", grep('headMessage', list.files(l.a$inDir), value = T)), sheet = 2)
+str <- paste0("共收到客户提供的", sum(data_group[1, -1]), "例", gsub("样本.*", "", headMessage["项目名称", 1]), "样本，实际检测",sum(data_group[2, -1]), "例", gsub("样本.*", "", headMessage["项目名称", 1]), "样本。")
+pander(str)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("样本信息表(Table 1)")
+pander(data_group)
+```
+
+***注：****①样本收到后，立即保存在-80℃低温冰箱中，直至实验检测；②为了更好地进行实验，对样本进行了重新编号，详细见“Table S0-样本编号对应表”（若未重新编号则无该表）。*
+
+# 实验信息
+
+## 仪器及试剂
+
+### 所用主要试剂
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+
+table <- read.xlsx(paste0(l.a$repDir, l.a$class_GT,"/others/Table.xlsx"),sheet="实验试剂列表",colNames = T,rowNames = F)
+set.caption("所用主要试剂基本信息(Table 2)")
+pander(table)
+
+```
+
+### 所用主要仪器平台
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+panderOptions('table.split.table',Inf)
+panderOptions('table.style','multiline')
+panderOptions('header.style','setext')
+set.caption("所用主要仪器平台基本信息(Table 3)")
+table <- read.xlsx(paste0(l.a$repDir, l.a$class_GT,"/others/Table.xlsx"),sheet="实验仪器列表",colNames = T,rowNames = F)
+pander(table)
+```
+
+<div style="page-break-before: always;" />
+
+## 实验方法
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+tx <- paste0("![实验分析流程图](", l.a$repDir, l.a$class_GT,"/others/实验分析流程图.jpg)")
+pander(tx)
+```
+
+
+### 代谢物提取
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+library(readxl)
+
+table_tiqu <- read.xlsx(paste0(l.a$inDir,"/", grep('headMessage', list.files(l.a$inDir), value = T)),sheet = '前处理步骤(手动改)')
+knitr::kable(table_tiqu[,1,drop=F])
+```
+
+<div style="page-break-before: always;" />
+
+### 标准溶液配制
+
+准确称取相应量的标准品于容量瓶中，分别配制成1 mg/mL的标准品储备液。取相应量的标准品储备液于容量瓶中，配制成混合标准溶液。依次稀释该标准溶液得一系列校准溶液（含与样品中浓度一致的同位素标记内标混合物）。
+
+### 上机检测
+
+***1、流动相条件：***
+
+本项目使用Vanquish (Thermo Fisher Scientific)超高效液相色谱仪，通过Waters ACQUITY UPLC BEH C18 (150 * 2.1 mm, 1.7 μm, Waters)液相色谱柱对目标化合物进行色谱分离。液相色谱A相为5 mmol/L的乙酸铵水溶液，B相为乙腈。柱温箱温度为45 ℃，样品盘设为4 ℃，进样体积为1 μL。
+
+***2、质谱条件：***
+
+本项目使用Orbitrap Exploris 120高分辨质谱仪，以平行反应监测(Parallel Reaction Monitoring, PRM)模式进行质谱分析。离子源参数如下：Spray voltage = +3500/-3200 V, Sheath gas (N2) flow rate = 40, Aux gas (N2) flow rate = 15, Sweep gas (N2) flow rate = 0, Aux gas (N2) temperature = 350 ℃, Capillary temperature = 320 ℃。
+
+进行UHPLC-MS/MS分析之前，将目标化合物标准溶液引入质谱中。针对每个目标化合物，对其PRM参数进行优化；由于大多数胆汁酸类化合物的子离子谱中，都没有强度足够用于定量的子离子出现，所以选择了高分辨条件下的母离子进行定量，具体参数见Table S2。
+
+### 校准曲线
+
+采用前文所描述的方法对校准溶液进行UPLC-PRM-MS/MS分析。校准曲线如Figure S1-Calibration所  
+示，y表示目标化合物与内标的峰面积比，x表示目标化合物的浓度(nmol/L)。若某一校准浓度准确度超出80-120%范围，则将该浓度校准点排除。
+
+### 方法检出限及定量限
+
+将校准溶液依次稀释2倍后进行UHPLC-PRM-MS分析，通过其信噪比来计算方法的检出限和定量限。方法最低检出限(LLOD)定义为信噪比为3时所对应的化合物浓度，方法最低定量限(LLOQ)定义为信噪比为10时所对应的化合物浓度(US FDA guideline for bioanalytical method validation)。
+
+### 方法精密度及准确度
+
+方法的精密度通过QC样品重复进样的标准相对偏差(RSD)来评估。准确度通过QC样品的测得浓度与理论浓度的百分比值来评估。
+
+<div style="page-break-before: always;" />
+
+## 实验结果
+
+### 色谱分离
+
+标准品溶液及样本提取离子色谱图(EICs)如Figure 1所示，从中可以看出：
+一、本项目所采用分析方法，目标化合物呈现出较好的色谱峰；二、很好地实现了各个目标化合物的色谱分离。图中各色谱峰依次为： (1)脱氢石胆酸(2)异别石胆酸/异石胆酸(3) 石胆酸(4) 23-脱甲脱氧胆酸(5) 6-酮石胆酸(6) 7-酮基石胆酸(7)12-酮基石胆酸(8)原胆酸(9)异熊去氧胆酸(10)鼠脱氧胆酸 (11)异猪去氧胆酸(12)熊脱氧胆酸(13)猪脱氧胆酸(14)3β-脱氧胆酸(15)鹅脱氧胆酸(16)脱氧胆酸(17)异脱氧胆酸(18)去甲胆酸(19)脱氢胆酸(20)7,12-二酮石胆酸(21)6,7-二酮石胆酸(22)7-酮脱氧胆酸(23)12-脱氢胆酸(24)3-脱氢胆酸(25)熊果胆酸(26)3β-胆酸(27)ω-鼠胆酸(28)α-鼠胆酸(29)β-鼠胆酸(30)猪胆酸(31)别胆酸(32)胆酸(33)甘氨石胆酸(34)甘氨熊脱氧胆酸(35)甘氨猪脱氧胆酸(36)甘氨鹅脱氧胆酸(37)甘氨脱氧胆酸(38)石胆酸硫酸(39)甘氨脱氢胆酸(40)甘氨猪胆酸(41)甘氨胆酸(42)熊去氧胆酸硫酸(43)鹅去氧胆酸3-硫酸(44)脱氧胆酸-3-硫酸(45)牛磺石胆酸(46)3-硫酸胆酸(47)牛磺熊脱氧胆酸(48)牛磺猪脱氧胆酸(49)牛磺鹅脱氧胆酸(50)牛磺脱氧胆酸(51)甘氨石胆酸-3-硫酸(52)牛磺ω-鼠胆酸(53)牛磺-α-鼠胆酸(54)牛磺-β-鼠胆酸(55)牛磺猪胆酸(56)牛磺胆酸(57)甘氨熊去氧胆酸-3-硫酸(58)甘氨鹅去氧胆酸硫酸(59)甘氨脱氧胆酸-3-硫酸(60)甘氨胆酸-3-硫酸(61)牛磺石胆酸-3-硫酸(62)鹅去氧胆酸-3-β-葡糖苷酸(63)鹅去氧胆酸-24-酰基-β-葡糖苷酸(64)牛磺熊去氧胆酸-3-硫酸(65)牛磺鹅去氧胆酸-3-硫酸(66)牛磺脱氧胆酸-3-硫酸(67)牛磺胆酸-3-硫酸 (68)甘氨去氧胆酸-3-O-β-葡糖苷酸(69)甘氨鹅脱氧胆酸-3-O-β-葡糖醛酸
+
+```{r echo=FALSE,warning=FALSE}
+pic_tic_qc <- grep("QC", list.files(paste0(l.a$resDir,"/figures/svg")), value=T, ignore.case = T)[1]
+tx_qc <- paste0("![Figure1A, Standard Solution ", str_extract(pic_tic_qc, "QC-.*[0-9]"),"](", paste0(l.a$resDir,"/figures/svg/", pic_tic_qc),")")
+pander(tx_qc)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+pic_tic_spl <- grep("SPL", list.files(paste0(l.a$resDir,"/figures/svg")), value=T, ignore.case = T)[1]
+tx_spl <- paste0("![Figure1B, Sample ", gsub("\\'.*",'', str_extract(pic_tic_spl, "Sample-.*")),"](", paste0(l.a$resDir,"/figures/svg/", pic_tic_spl),")")
+pander(tx_spl)
+
+```
+
+Figure 1. 部分指标提取离子色谱图示例。标准品溶液(Figure 1A)及样品(Figure 1B)提取离子色谱图。
+
+### 方法定量参数
+
+目标化合物的定量参数见Table S3，各目标化合物的最低检出限(LLODs)在`r paste0(ifelse(min(data_S3$rawy)<1, signif(min(data_S3$rawy),2),round(min(data_S3$rawy),2)), '-', ifelse(max(data_S3$rawy)<1, signif(max(data_S3$rawy),2),round(max(data_S3$rawy),2)))` nmol/L，最低定量限(LLOQs)在`r paste0(ifelse(min(data_S3$xmin)<1, signif(min(data_S3$xmin),2),round(min(data_S3$xmin),2)), '-', ifelse(max(data_S3$xmin)<1, signif(max(data_S3$xmin),2),round(max(data_S3$xmin),2)))` nmol/L 之间；所有目标化合物的相关系数(R2)均大于`r round(min(data_S3$score),3)` ，说明色谱峰峰面积与化合物浓度间呈良好的定量关系，可满足靶向代谢组学分析的要求(详细校准曲线见Figure S1-  
+Calibration)。
+
+QC样品的准确度(Accuracy)及标准相对偏差(RSD)见Table S4，QC样品重复进样次数为`r headMessage["QC样品重复进样次数", 1]`次。如表中所示，所有目标化合物的平均准确度在`r min(data_S4$Accuracy)`%–`r max(data_S4$Accuracy)`% 之间，标准相对偏差均小于`r max(data_S4$RSD)`%。
+
+以上数据表明，本方法能够在以上所示的浓度范围内，准确可靠地检测出样品中的目标代谢物含量。
+
+### 样本中目标代谢物检测结果
+
+样本中各目标代谢物的定量结果见Table S5。
+
+样品检测过程中，样品最终测得浓度C~F~(Final Concentration,nmol/L)为仪器直接测得浓度  
+C~C~(Calculated Concentration, nmol/L)乘以稀释因子Dil(Dilution Factor)，单位为nmol/L；样品中目标代谢物浓度C~M~(Metabolite Concentration, nmol/kg)等于样品最终测得浓度C~F~乘以样品最终体积V~F~  
+(Volume, μL)，除以样本质量M~S~(Weight, mg)，单位为nmol/kg。“N.D.”表示目标化合物在该样本中无检出。
+
+**计算公式：C~M~[nmol/kg] = C~F~[nmol/L] * V~F~[μL] / M~S~[mg]**
+
+<div style="page-break-before: always;" />
+
+## 实验小结
+
+本项目采用UHPLC-PRM-MS/MS的方法，针对样品中的69种胆汁酸类目标化合物进行检测分析，完成了`r sum(data_group[2, -1])`例`r gsub("样本.*", "", headMessage["项目名称", 1])`样品的分析检测，样品中共计检出了37种胆汁酸类化合物。
+
+## 英文参考步骤
+
+***固体样本处理步骤（Metabolites Extraction）：***
+
+A 25 mg aliquot of each individual sample was precisely weighed and transferred to an Eppendorf tube (Table S5). After the addition of 1000 μL of extract solution (precooled at -40 ℃, acetonitrile-methanol-water, 2:2:1), the samples were vortexed for 30 s, homogenized at 35 Hz for 4 min, and sonicated for 5 min in ice-water bath. The homogenate and sonicate circle was repeated for three times, followed by incubation at -40 ℃ for 1 h and centrifugation at 12000 rpm and 4 ℃ for 15 min. The resulting supernatants were transferred to LC-MS vials for UHPLC-MS/MS analysis.
+
+***标准溶液配制（Standard Solution Preparation）：***
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 1 mg/mL. An aliquot of each of the stock solutions was transferred to a flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+***上机检测（UHPLC-MRM-MS Analysis）：***
+
+The UHPLC separation was carried out using an UHPLC System (Vanquish, Thermo Fisher Scientific), equipped with a Waters ACQUITY UPLC BEH C18 column (150 * 2.1 mm, 1.7 μm, Waters). The mobile phase A was 5 mmol/L ammonium acetate in water, and the mobile phase B was acetonitrile. The column temperature was set at 45 ℃. The auto-sampler temperature was set at 4 ℃ and the injection volume was 1 μL.
+
+A Orbitrap Exploris 120 mass spectrometer (Thermo Fisher Scientific) was applied for assay development. Typical ion source parameters were: spray voltage = +3500/-3200 V, sheath gas (N2) flow rate = 40, aux gas (N2) flow rate = 15, sweep gas (N2) flow rate = 0, aux gas (N2) temperature = 350 ℃, capillary temperature = 320 ℃.
+
+The parallel reaction monitoring (PRM) parameters for each of the targeted analytes were optimized, by injecting the standard solutions of the individual analytes, into the API source of the mass spectrometer. Since most of the analytes did not show product ion acceptable for quantification, the precursor ion in high resolution was selected for quantification. (Table S2)
+
+***校准曲线（Calibration Curves）：***
+
+Calibration solutions were subjected to UPLC-PRM-MS/MS analysis using the methods described above. Figure S1-Calibration summarizes the results for the calibration curves where y is the peak areas ratio for analyte/IS, and x is the concentration (nmol/L) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80–120%. 
+
+***方法检出限及定量限（Limit of Detection (LOD) and Limit of Quantitation (LOQ)）：***
+
+The calibration standard solution was diluted stepwise, with a dilution factor of 2. These standard solutions were subjected to UHPLC-MRM-MS analysis. The signal-to-noise ratios (S/N) were used to determine the lower limits of detection (LLODs) and lower limits of quantitation (LLOQs). The LLODs and LLOQs were defined as the analyte concentrations that led to peaks with signal-to-noise ratios (S/N) of 3 and 10, respectively, according to the US FDA guideline for bioanalytical method validation.
+
+***方法精密度及准确度（Precision and Accuracy）：***
+
+The precision of the quantitation was measured as the relative standard deviation (RSD), determined by injecting analytical replicates of a QC sample. The quantitative accuracy was assessed by the observed concentration and spiked concentration of the QC samples. The quantitative accuracy was calculated as [(mean observed concentration) / (spiked concentration)] × 100%.
+
+***色谱分离（LC Separation）：***
+
+Figure 1 shows the extracted ion chromatographs (EICs) from a standard solution (Figure 1A) and a sample (Figure 1B) of the targeted analytes under the optimal conditions. As can be seen from the figure, (i) most of the analytes showed excellent peak shapes, (ii) good separations were obtained.
+
+***方法定量参数（Analysis Metrics）：***
+
+Table S3 lists the resulting lower-limits of detection and quantitation (LLODs and LLOQs), and the LLODs ranged from `r ifelse(min(data_S3$rawy)<1, signif(min(data_S3$rawy),2),round(min(data_S3$rawy),2))` to `r ifelse(max(data_S3$rawy)<1, signif(max(data_S3$rawy),2),round(max(data_S3$rawy),2))` nmol/L, the LLOQs ranged from `r ifelse(min(data_S3$xmin)<1, signif(min(data_S3$xmin),2),round(min(data_S3$xmin),2))` to `r ifelse(max(data_S3$xmin)<1, signif(max(data_S3$xmin),2),round(max(data_S3$xmin),2))` nmol/L for all the analytes. Correlation coefficients (R^2^) of regression fitting were above `r round(min(data_S3$score),3)` for all the analytes, indicating a good quantitative relationship between the MS responses and the analyte concentrations, which was satisfying for targeted metabolomics analysis (Figure S1-Calibration).
+
+Table S4 lists the analytical accuracies and relative standard deviations of the QC samples, with `r headMessage["QC样品重复进样次数", 1]` technical replicates. The accuracies determined were `r min(data_S4$Accuracy)`%–`r max(data_S4$Accuracy)`% for all the analytes, with all the RSDs below `r max(data_S4$RSD)`% (n = `r headMessage["QC样品重复进样次数", 1]`).
+
+The analysis metrics indicated that the method allowed accurate quantitation of the targeted metabolites in the biological sample, in the concentration range described as above.
+
+***样本中目标代谢物检测结果（Quantification Results）：***
+
+The quantification results were shown in Table S5. The final concentration (C~F~, nmol/L) equals the calculated concentration (C~C~, nmol/L) multiplied by the dilution factor (Dil). The metabolite concentration (C~M~, nmol/kg) equals the final concentration (C~F~, nmol/L) multiplied by the final volume (V~F~, μL), and divided by weight of the sample (M~S~, mg). “N.D.”means that the targeted metabolites were not detectable in the corresponding sample.

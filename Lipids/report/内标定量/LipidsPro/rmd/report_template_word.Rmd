@@ -1,0 +1,385 @@
+---
+output: word_document
+---
+
+
+
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(readxl)
+library(kableExtra)
+library(knitr)
+library(pander)
+library(rmarkdown)
+
+
+options(knitr.kable.NA = "")
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+
+
+
+
+## create table list
+qc_cpds <- l.a$get_table_quant(l.a=l.a, overwrite=TRUE,  filename = l.a$outTab)
+l.a$data_qc <- qc_cpds$qc
+l.a$has_qc <- !is.null(l.a$data_qc)
+l.a$cpds    <- qc_cpds$cpds
+l.a$grp_type <- "__neg|__pos"
+
+
+## headMessage sheet-1 and path
+head_msg <- l.a$head_msg
+head_path <- l.a$head_path
+grp_types <- l.a$grp_type %>% stringi::stri_split(fixed = '|') %>% unlist()
+
+## Other table path
+other_table <- glue::glue("{rep}/{rpt}/others/Table.xlsx", rep=l.a$repDir, rpt=l.a$rpt_flow)
+
+
+## sampleInfo sheet-1
+### TIC/XIC figures save as <sample_name>__<sample_subs> for multi-run project.
+spl_info <- 
+  l.a$spl_info %>% 
+  left_join(l.a$spl_detail) %>%
+  mutate(sample_name = paste(sample_name, sample_subs, sep="__"))
+
+
+## path to TIC 
+if (l.a$has_qc){
+  spl_name_qc <- spl_info %>% filter(sample_type == "QC") %>% select(sample_name) %>% .[[1,1]]
+  fig_qc_0 <- sprintf("%s/figures/TIC/QC/%s.png", l.a$resDir, spl_name_qc)
+}
+
+spl_name_sp <- spl_info %>% filter(sample_type == "SPL") %>% select(sample_name) %>% .[[1,1]]
+fig_sp_0 <- sprintf("%s/figures/TIC/SPL/%s.png", l.a$resDir, spl_name_sp)
+
+
+## path to RT profile
+fig_name_n <- 'RT-Control-Negative__0.png'
+fig_name_p <- 'RT-Control-Positive__0.png'
+fig_rt_0n <- glue::glue("{path}/figures/IS/{name}", path=l.a$resDir, name=fig_name_n)
+fig_rt_0p <- glue::glue("{path}/figures/IS/{name}", path=l.a$resDir, name=fig_name_p)
+
+# cover info
+project_code = l.a$head_msg["项目编号", 1]
+project_name = l.a$head_msg["项目名称", 1]
+custom_inst = l.a$head_msg["客户单位", 1]
+custom_name = l.a$head_msg["客户姓名", 1]
+
+
+```
+
+
+```{r cover, child=glue::glue("{rep}/{rpt}/rmd/cover_word.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+```
+
+
+```{r tables, child=glue::glue("{rep}/{rpt}/rmd/tables_word.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+# 样本基本信息
+
+# 实验信息
+
+## 仪器及试剂
+### 所用主要试剂
+### 实验仪器
+
+## 实验方法
+### 代谢物提取
+```
+
+
+```{r method, child=glue::glue("{rep}/{rpt}/rmd/method.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+### 上机检测
+#### 液相条件
+#### 质谱条件
+```
+
+
+
+
+
+
+## 实验结果
+```{r results, echo=FALSE, include=FALSE}
+
+# 精确替换:匹配 __pos 后的所有字符(包括数字)
+tic_cap_1 <- glue::glue("样品 {spl} TIC图({grp})", spl=spl_name_sp %>% gsub("__pos\\d*", "__neg", .), grp=grp_types[1] %>% gsub("__","",.))
+
+tic_cap_2 <- glue::glue("样品 {spl} TIC图({grp})", spl=spl_name_sp, grp=grp_types[2] %>% gsub("__","",.))
+
+```
+
+
+### 色谱分离
+
+通过总离子流图(TIC),图`r l.a$fig_count()`-`r l.a$fig_count()`可大致看到样本出峰和响应情况,横坐标为保留时间,纵坐标为物质的响应强度。 
+
+
+```{r tic1, fig.cap=tic_cap_1, out.width="100%"}
+
+fig_sp_0 %>% gsub("__pos\\d*", "__neg", .) %>% include_graphics()
+
+```
+
+
+```{r tic2, fig.cap=tic_cap_2, out.width="100%"}
+
+fig_sp_0 %>% include_graphics()
+
+```
+
+
+
+\newpage
+
+
+### 质量控制
+
+1、过程质控
+
+在检测过程中实时地监控仪器稳定性、信号是否正常十分重要。以混合样本溶液作为质控样本，在样本检测过程中每隔10个样本插入一个QC质控样本，通过对质控样本的数据进行分析来判断最终采集数据的质量，以便及时发现异常，尽早将问题排除，保证最终采集数据的质量。
+
+①	 内标保留时间质控
+
+```{r rt-qc, echo=FALSE, include=FALSE}
+has_qc_str <- ifelse(l.a$has_qc, "样品和QC", "样品")
+
+rts_cap1 <- glue::glue("{spl}负离子内标保留时间质控图（{grp}）", spl=has_qc_str, grp=grp_types[1] %>% gsub("__","",.))
+
+rts_cap2 <- glue::glue("{spl}正离子内标保留时间质控图（{grp}）", spl=has_qc_str, grp=grp_types[2] %>% gsub("__","",.))
+
+
+```
+
+内标保留时间越一致，说明仪器越稳定。由图`r l.a$fig_count()`-`r l.a$fig_count()`可以看到内标在`r has_qc_str`中的保留时间质控图，所有`r has_qc_str`的保留时间与预期保留时间均在±12 s以内。说明仪器数据采集稳定性很好。
+
+
+
+```{r rts-1n, fig.cap=rts_cap1, out.width="100%"}
+fig_rt_0n %>% gsub(l.a$grp_type, grp_types[1], .) %>% include_graphics()
+
+```
+
+```{r rts-1p, fig.cap=rts_cap2, out.width="100%"}
+fig_rt_0p %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
+
+```
+
+
+
+\newpage
+
+
+
+```{r qc-cor, include=l.a$has_qc, eval=l.a$has_qc}
+
+fig_cap1 <- glue::glue("QC样本相关性图")
+
+"
+②	QC样本相关性
+
+QC样品相关性越接近于1（应大于0.8），说明整个方法稳定性越好数据质量越高。从图 {f1}我们可以看到QC样品相关性很高，说明本次实验数据质量很高。
+" %>% glue::glue(f1=l.a$fig_count()) %>% pander()
+
+```
+
+
+
+```{r cor1, include=l.a$has_qc, eval=l.a$has_qc, out.width="90%", fig.cap=fig_cap1, fig.pos="H"}
+# get correlation
+
+data_qc <- l.a$data_qc
+
+fig_path <- glue::glue('{res}/figures/QC-corrplot.jpg', res=l.a$resDir)
+fig <- l.a$corr_plot(data_qc)
+
+ggsave(fig_path, fig, width = 35, height = 35, units = 'in', dpi = 300)
+
+fig_path %>% include_graphics()
+
+```
+
+
+
+
+```{r is-rsd, include=l.a$has_qc, eval=l.a$has_qc}
+# output 1
+tx_is_rsd <- "
+2、内标质控
+
+① QC样品中内标响应稳定性
+
+内标为外源引入的同位素标记代谢物，QC样品中内标浓度相同，所以内标的响应差异越小（RSD≤20%），说明系统越稳定，数据质量越高。从下表中数据可以看到本次实验数据质量稳定。
+"
+pander(tx_is_rsd)
+
+```
+
+
+
+```{r rsd, include=l.a$has_qc, eval=l.a$has_qc, tab.cap="QC样品中内标响应稳定性表"}
+# get data.frame
+file_is <- paste0(l.a$resDir, '/Quantification-IS.xlsx')
+data_is <- l.a$get_table_sheet(file_is, sheet='merge', default="Statistics") %>% arrange(id)
+
+pos1 <- data_is %>% filter(polarity==1) %>% select(id, `RSD[%]`) %>% rename(`Pos内标`="id", `响应RSD[%]`="RSD[%]")
+neg1 <- data_is %>% filter(polarity==2) %>% select(id, `RSD[%]`) %>% rename(`Neg内标`="id", `响应RSD[%]`="RSD[%]")
+
+
+# output
+cbind(neg1,pos1) %>% kable()
+
+```
+
+
+
+
+```{r spl-type, child=glue::glue("{rep}/{rpt}/rmd/{spl}_end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow, spl=l.a$spl_type)}
+```
+
+
+
+
+
+```{r en-end, child=glue::glue("{rep}/{rpt}/rmd/end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+```
+
+
+
+
+
+
+
+
+```{r copy-fig, include=FALSE, eval=FALSE}
+## for large panel
+fig_tag <- '-merge'
+
+tic_fig <- glue::glue("{res}/figures/TIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+tic_new <- glue::glue("{out}/TIC-SPL{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(tic_fig,l.a$outDir)
+file.rename(tic_new, paste0(l.a$outDir,'/Figure S1-Sample TIC.pdf'))
+```
+
+
+```{r copy-data, include=FALSE}
+## copy mzml files
+d_data_1 <- paste(l.a$outData, sep="/")
+
+d_data_1 %>% dir.create(recursive = TRUE)
+
+
+l.a$inDir %>% l.a$copy_file(d_sub="SPL", patt="mzML$", d_dest=d_data_1)
+
+## copy other tables for lipids
+d_others <- glue::glue("{rep}/{rpt}/others/", rep=l.a$repDir, rpt=l.a$rpt_flow)
+file_cp <- grep('Classification', list.files(d_others), value=T)
+file.copy(paste0(d_others, file_cp), l.a$outDir)
+
+```
+
+
+```{r copy-extra, include=FALSE, eval=FALSE}
+
+## copy calibrator figures
+fig_tag <- '-merge'
+cal_fig <- glue::glue("{res}/figures/Calibrators.best{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+new_fig <- glue::glue("{out}/Calibrators.best{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(cal_fig,l.a$outDir)
+file.rename(new_fig, paste0(l.a$outDir,'/Figure S1-Calibration.pdf'))
+
+
+
+
+
+
+
+
+```{r copy-fig3, include=FALSE, eval=TRUE}
+# output figures include QC/SPL/single_SPL 2 png/SVG
+# 创建输出目录
+figures_dir <- paste0(l.a$outDir, '/figures')
+if(!dir.exists(figures_dir)) dir.create(figures_dir, recursive = TRUE)
+
+# 查找所有包含SampleType的文件
+search_dir <- paste0(l.a$resDir, "/figures/TIC")
+all_files <- list.files(search_dir, full.names = TRUE, recursive = TRUE)
+
+# 筛选SPL和QC的文件
+spl_files <- all_files[grepl("SampleType.*SPL", all_files)]
+qc_files <- all_files[grepl("SampleType.*QC", all_files)]
+
+# 复制SPL文件（取第一个）
+if(length(spl_files) > 0) {
+  spl_png <- spl_files[grepl("\\.png$", spl_files)][1]
+  spl_svg <- spl_files[grepl("\\.svg$", spl_files)][1]
+  
+  if(!is.na(spl_png)) file.copy(spl_png, paste0(figures_dir, '/', basename(spl_png)))
+  if(!is.na(spl_svg)) file.copy(spl_svg, paste0(figures_dir, '/', basename(spl_svg)))
+}
+
+# 复制QC文件（取第一个）
+if(length(qc_files) > 0) {
+  qc_png <- qc_files[grepl("\\.png$", qc_files)][1]
+  qc_svg <- qc_files[grepl("\\.svg$", qc_files)][1]
+  
+  if(!is.na(qc_png)) file.copy(qc_png, paste0(figures_dir, '/', basename(qc_png)))
+  if(!is.na(qc_svg)) file.copy(qc_svg, paste0(figures_dir, '/', basename(qc_svg)))
+}
+
+
+
+## single SPL(EXAMPLE IN REPORT)
+# NEG
+fig1_base <- fig_sp_0 %>% gsub("__pos\\d*", "__neg", .) %>% gsub("\\\\", "/", .)
+fig1_base_no_ext <- sub("\\.[^.]+$", "", fig1_base)
+fig1_png <- paste0(fig1_base_no_ext, ".png")
+file.copy(fig1_png, file.path(figures_dir, basename(fig1_png)))
+fig1_svg <- paste0(fig1_base_no_ext, ".svg")
+file.copy(fig1_svg, file.path(figures_dir, basename(fig1_svg)))
+
+
+# POS
+fig2_base <- fig_sp_0 %>% gsub("\\\\", "/", .)
+fig2_base_no_ext <- sub("\\.[^.]+$", "", fig2_base)
+fig2_png <- paste0(fig2_base_no_ext, ".png")
+file.copy(fig2_png, file.path(figures_dir, basename(fig2_png)))
+fig2_svg <- paste0(fig2_base_no_ext, ".svg")
+file.copy(fig2_svg, file.path(figures_dir, basename(fig2_svg)))
+```
+
+
+
+
+
+
+
+
+
+## for small panel
+if(is.null(l.a$data_qc)) {
+  file.remove(
+    paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx")
+  )
+  file.rename(
+    paste0(l.a$outDir, "/Table S5-Quantification Results.xlsx"),
+    paste0(l.a$outDir, "/Table S4-Quantification Results.xlsx")
+  )
+}
+xic_fig <- glue::glue("{res}/figures/XIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+xic_new <- glue::glue("{out}/XIC-SPL{tag}.pdf", res=l.a$outDir, tag=fig_tag)
+file.copy(xic_fig,l.a$outDir)
+file.rename(xic_new, paste0(l.a$outDir,'/Figure S2-Sample XIC.pdf'))
+
+
+## copy other tables for small
+d_others <- glue::glue("{rep}/{rpt}/others/", rep=l.a$repDir, rpt=l.a$rpt_flow)
+file_cp <- grep('Table S', list.files(d_others), value=T)
+file.copy(paste0(d_others, file_cp), l.a$outDir)
+
+
+
+```
+
+

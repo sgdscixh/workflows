@@ -1,0 +1,12 @@
+
+
+### 上机检测
+
+Agilent GC 7890B-5977B气相色谱质谱联用仪配有Agilent HP-FFAP毛细管(30m×250μm×0.25μm,
+
+J&W Scientific, Folsom, CA, USA)，GC-MS具体分析条件如下：
+
+```{r inst-params, tab.cap="仪器参数"}
+read.xlsx(other_table, sheet="仪器参数", colNames = T, rowNames = F) %>% kable()
+```
+

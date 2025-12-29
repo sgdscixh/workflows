@@ -1,0 +1,109 @@
+% 设置 A4 纸张
+\usepackage{tocloft}
+\usepackage{geometry}
+\geometry{a4paper}
+\usepackage{ctex}
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\usepackage{textcomp,mathcomp}
+
+
+\usepackage{bookmark}
+\bookmarksetup{numbered}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % 节使用虚线
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}} % 小节使用虚线
+\renewcommand{\contentsname}{目录}
+
+
+
+\usepackage[numbers]{natbib}
+\usepackage[nottoc]{tocbibind}
+\renewcommand{\bibname}{参考文献}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{mycolor}{RGB}{219, 48, 122}
+\hypersetup{
+    colorlinks = true,
+    linkcolor = RoyalBlue,
+    citecolor = RoyalBlue,
+    urlcolor = blue
+}
+
+
+\usepackage{textalpha}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\floatplacement{table}{H}
+
+
+
+\usepackage{newunicodechar}
+\newunicodechar{℃}{\ensuremath{^\circ\mathrm{C}}}
+\usepackage{pifont}
+\newcommand{\circled}[1]{\ding{\numexpr#1+171\relax}} % 1-20
+\newunicodechar{①}{\circled{1}}
+\newunicodechar{②}{\circled{2}}
+\newunicodechar{③}{\circled{3}}
+% 添加必要包
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{eso-pic} % 替换 background 包
+\usepackage{afterpage}
+\usepackage{etoolbox}
+
+
+
+% font family
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}[
+  BoldFont = SimHei,
+  ItalicFont = KaiTi,
+  AutoFakeBold = true
+]
+\setCJKsansfont{Microsoft YaHei}
+\setCJKmonofont{FangSong}
+
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+% \setCJKmainfont{Microsoft YaHei}
+% \setmainfont{Times New Roman}
+% 设置页边距
+
+% 设置页眉页脚
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\includegraphics[width=\textwidth]{header.png}}
+\fancyfoot[C]{\includegraphics[width=\textwidth]{footer.jpg}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{28pt}
+
+% 定义首页背景命令 - 修复空间因子错误
+\newcommand{\settitlebackground}{%
+  \AddToShipoutPictureBG*{%
+    \AtPageLowerLeft{%
+      \includegraphics[width=\paperwidth,height=\paperheight]{report_cover.jpg}%
+    }%
+  }%
+}
+
+% 定义封面页样式（首页无页码）
+\newcommand{\coverpage}{%
+  \thispagestyle{empty} % 关键：首页无页眉页脚
+  \settitlebackground % 设置背景
+
+  \clearpage
+  \ClearShipoutPicture % 清除后续页面背景
+  \pagestyle{fancy} % 恢复页眉页脚样式
+  \setcounter{page}{1} % 重置页码计数器
+}
+
+
+  
+  
+  
+  
+  

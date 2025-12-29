@@ -1,0 +1,5 @@
+
+***细胞样本处理步骤（Metabolites Extraction）：***
+
+After adding a aliquot of 1000 μL extraction solution ( acetonitrile-methanol-water, 2:2:1, containing isotopically-labelled internal standard mixture, precooled at -40 ℃), the samples were vortexed for 30 s. The samples were precooled in dry ice, repeated freeze-thaw three times in liquid nitrogen, followed by vortexed for 30s and sonicated for 15 min in ice-water bath. The samples were followed by incubation at -40 ℃ for 1 h. The samples were centrifugation at 12000 rpm (RCF=13800(×g), R= 8.6cm) and 4 ℃ for 15 min. A 100 μL aliquot of the clear supernatant was transferred to an auto-sampler vial for UHPLC-MS/MS analysis.
+

@@ -1,0 +1,67 @@
+
+## 英文参考步骤
+
+### 固体样本处理步骤(Metabolites Extraction for Solid Sample)
+
+Solid samples were placed on dry ice and kept frozen while being prepared. Weigh 25 mg of the sample into a 2.0 mL Eppendorf tube at low temperature. A 1000 μL aliquot of extract solvent (80% MeOH, containing internal standards) and 2 steel beads of 3.2 mm were added. Samples were homogenized at 40 Hz for 4 min, and were sonicated in ice-water bath for 5 min. The homogenization and sonication cycle was repeated for 3 times. After that, samples were incubated at -40 °C for 1 h. Then all the samples were centrifuged at 12000 rpm and 4 °C for 15 min. 100 μL of supernatant was transferred to a 2.0 mL Eppendorf tube. 100 μL of derivatization reagent and 50 μL of 1 M NaHCO3 were added to the sample. It was vortexed evenly and incubated in a 40°C water bath for 1 hour. Then 18 μL of 10% FA was added to quench the reaction. The mixture was centrifuged at 12,000 rpm and 4°C for 5 minutes. The supernatant was transferred to an autosampler vial for analysis.[@DL-AA; @chiral-AA]
+
+### 液体样本提取 (Metabolites Extraction for Liquid Sample)
+
+The samples were thawed in ice water bath and was vortexed for 30 s. 50 μL of liquid samples was mixed with 200 µL methanol containing internal standard and were vortexed for 30 s. After sonication in ice-water bath for 15 min, samples were incubated at -40 °C for 1 h. 100 μL of supernatant was transferred to a 2.0 mL Eppendorf tube. 100 μL of derivatization reagent and 50 μL of 1 M NaHCO3 were added to the sample. It was vortexed evenly and incubated in a 40°C water bath for 1 hour. Then 18 μL of 10% FA was added to quench the reaction. The mixture was centrifuged at 12,000 rpm and 4°C for 5 minutes. The supernatant was transferred to an autosampler vial for analysis.[@DL-AA; @chiral-AA]
+
+### 仪器条件 (Instrument Parameter)
+
+The UHPLC separation was carried out using Agilent 1290 UPLC, equipped with a ACQUITY UPLC BEH C18 Column(1.7 µm, 2.1 mm * 150 mm). The mobile phase A was 5 mM ammonium acetate in water, and the mobile phase B was acetonitrile. The column temperature was set at 45 °C. The auto-sampler temperature was set at 4 °C and the injection volume was 2 μL.
+
+6500 QTRAP+ Mass Spectrometer (SCIEX, USA), equipped with an electrospray ionization interface, was applied for assay development. Typical ion source parameters were: Ion Spray Voltage = ±4500 V, Ion Source Gas 1=50 psi, Ion Source Gas 2=50 psi, Temperature = 450 °C, Curtain Gas (+/-)=40/35 psi.
+
+The MRM parameters for each of the targeted analytes were optimized using flow injection analysis, by injecting the standard solutions of the individual analytes, into the ESI source of the mass spectrometer. Several most sensitive transitions were used in the MRM scan mode to optimize the collision energy for each Q1/Q3 pair (Table S2). Among the optimized MRM transitions per analyte, the Q1/Q3 pairs that showed the highest sensitivity and selectivity were selected as "quantifier" for quantitative monitoring. The additional transitions acted as "qualifier" for the purpose of verifying the identity of the target analytes. Analyst  (1.7.3，SCIEX) and Biotree Biobud (v2.0.3) were employed for MRM data acquisition.
+
+### 标准曲线 (Standard Solution Preparation)
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 10 mmol/L. An aliquot of each of the stock solutions was transferred to a 5 mL flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+Calibration solutions were subjected to UHPLC-MRM analysis using the methods described above. Figure S1-Calibration summarizes the results for the calibration curves where y i s the ratio of the peak area of the target compound to the corresponding internal standard, and x i s the concentration (ng/mL) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80 -120%. Detailed calibration curves for individual analytes are shown in Figure S1-Calibration.
+
+### 方法检出限及定量限 (LOD and LOQ)
+
+The calibration standard solution was diluted stepwise, with a dilution factor of 2.
+These standard solutions were subjected to UHPLC-MRM-MS analysis. The signal-to-noise ratios (S/N) were used to determine the lower limits of detection  (LODs) and lower limits of quantitation (LOQs). The LODs and LOQs were defined as the analyte concentrations that led to peaks with signal-to-noise ratios (S/N) of 3 and 10, respectively, according to the US FDA guideline for bioanalytical method validation.
+
+
+```{r acc-rsd-en, eval=l.a$has_qc}
+"
+### 方法精密度及准确度(Precision and Accuracy)
+
+The precision of the quantitation was measured as the relative standard deviation (RSD), determined by injecting analytical replicates of a QC sample. The accuracy of quantitation was calculated as [(mean observed concentration) / (Theoretical concentration)] × 100%.
+" %>% pander()
+
+```
+
+
+### 色谱分离 (LC Separation)
+The extracted ion chromatographs (EICs) plots from a standard solution and a sample of the targeted analytes under the optimal conditions. As can be seen from this figure,  (i) all of the analytes showed symmetrical peak shapes,  (ii) baseline separations were obtained, (iii) and the retention time and peak shapes for all of the analytes showed good correlation between the standard solution and the real sample.
+
+### 方法定量参数 (Analysis Metrics)
+
+Table S3 lists the resulting lower-limits of detection and quantitation  (LODs and LOQs), and the LODs ranged from `r llod_0` to `r llod_1` nmol/L, the LOQs ranged from `r lloq_0` to `r lloq_1` nmol/L for all the analytes. Correlation coefficients (R2) of regression fitting were above `r scores` for all the analytes, indicating a good quantitative relationship between the MS responses and the analyte concentrations, which was satisfying for targeted metabolomics analysis (see Figure S1-Calibration).
+
+
+```{r qc-acc-en, echo=FALSE, warning=FALSE, eval=l.a$has_qc}
+pander(msg_en)
+```
+
+
+The analysis metrics indicated that the method allowed accurate quantitation of the targeted metabolites in the biological sample, in the concentration range described as above.
+
+### 样本中目标代谢物检测结果(Quantification Results)
+
+**Solid**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/g) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by sample mass m (mg), divided by 1,000.
+
+**Liquid**
+
+C~C~ (nmol/L) is Calculated Concentration, that is calculated by calibration curve. C~M~ (Metabolite Concentration, nmol/L) is the content of target metabolites in the sample. It equal to Calculated Concentration C~C~ (nmol/L) multiplied by Extration Volumn (µL), divided by V~S~ (Sample Volume, mL).
+
+

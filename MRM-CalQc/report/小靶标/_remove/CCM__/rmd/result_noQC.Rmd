@@ -1,0 +1,34 @@
+<div style="page-break-before: always;" />
+## 实验结果
+
+### 色谱分离
+
+通过总离子流图（TIC）可大致看到样本出峰和响应情况，横坐标为保留时间，纵坐标为物质的响应强度。 
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+dirSelected <- paste0(l.a$resDir['HILIC'], "/figures/svg/")
+files <- list.files(dirSelected, pattern = '.svg')
+pic = files[grep('SPL', files)][1]
+fileName <- gsub(".*, '([^']+)'.*", "\\1", pic)
+tx <- paste0("![样本",fileName," (HILIC)](", dirSelected, pic, ")")
+pander(tx)
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(pander)
+dirSelected <- paste0(l.a$resDir['RP'], "/figures/svg/")
+files <- list.files(dirSelected, pattern = '.svg')
+pic = files[grep('SPL', files)][1]
+fileName <- gsub(".*, '([^']+)'.*", "\\1", pic)
+tx <- paste0("![样本",fileName," (RP)](", dirSelected, pic, ")")
+pander(tx)
+```
+
+### ⽅法定量参数
+
+目标化合物的定量参数见Table S3，各目标化合物的最低检出限(LLODs)在`r paste0(ifelse(min(data_S3$rawy)<1, signif(min(data_S3$rawy),2),round(min(data_S3$rawy),2)), '-', ifelse(max(data_S3$rawy)<1, signif(max(data_S3$rawy),2),round(max(data_S3$rawy),2)), ' ',l.a$unit_CC)`，最低定量限(LLOQs)在`r paste0(ifelse(min(data_S3$xmin)<1, signif(min(data_S3$xmin),2),round(min(data_S3$xmin),2)), '-', ifelse(max(data_S3$xmin)<1, signif(max(data_S3$xmin),2),round(max(data_S3$xmin),2)), ' ',l.a$unit_CC)` 之间；所有目标化合物的相关系数(R2)均大于`r round(min(data_S3$score),3)`，说明色谱峰峰面积与化合物浓度间呈良好的定量关系，可满足靶向代谢组学分析的要求(详细校准曲线见Figure S1-Calibration)。
+
+QC样品的准确度(Accuracy)及标准相对偏差(RSD)见Table S4，QC样品重复进样次数为3次。如表中所示，所有目标化合物的平均准确度在`r min(data_S4$Accuracy)`% -`r max(data_S4$Accuracy)`%之间，标准相对偏差均小于`r max(data_S4$RSD)`%。
+
+以上数据表明，本方法能够在以上所示的浓度范围内，准确可靠地检测出样品中的目标代谢物含量。

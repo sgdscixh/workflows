@@ -1,0 +1,21 @@
+
+### 标准溶液配制
+
+准确称取相应量的标准品于10 mL容量瓶中，分别配制成10 mmol/L的标准品储备液。取相应量的标准品储备液于10 mL容量瓶中，配制成混合标准溶液。依次稀释该标准溶液得一系列校准溶液（含与样品中浓度一致的同位素标记内标混合物）。
+
+
+### 上机检测
+
+1) **色谱方法**
+
+本项目使用Agilent 1290 Infinity II series (Agilent Technologies)超高效液相色谱仪，通过Waters ACQUITY UPLC BEH Amide (100 × 2.1 mm, 1.7 μm, Waters)液相色谱柱对目标化合物进行色谱分离。液相色谱A相为1%甲酸水溶液，B相为1%甲酸乙腈。柱温箱温度为35 °C，样品盘设为4 °C，进样体积为1 μL。
+
+
+2) **质谱方法**
+
+
+本项目使用装备AJS-ESI离子源的Agilent 6460三重四极杆质谱仪，以多反应监测(MRM)模式进行质谱分析。离子源参数如下：Capillary voltage = +4000/-3500 V, nozzle voltage = +500/-500 V, gas (N2) temperature = 300 °C, gas (N2) flow = 5 L/min, sheath gas (N2) temperature = 250 °C, sheath gas flow = 11 L/min, nebulizer = 45 psi.
+
+进行UHPLC-MS/MS分析之前，将目标化合物标准溶液引入质谱中。针对每个目标化合物，选取信号强度最高的数个母离子-子离子对(transition)，对其MRM参数进行优化，并选取其中响应最好的离子对用于定量分析，其它离子对用于目标化合物定性分析，具体参数见Table S2。
+
+本项目中，所有质谱数据采集及目标化合物定量分析工作，均通过Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies)和Biotree Biobud (v2.0.3)来完成。

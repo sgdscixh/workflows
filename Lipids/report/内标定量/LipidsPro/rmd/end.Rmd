@@ -1,0 +1,47 @@
+\newpage
+
+## 英文参考步骤（使用时英文方法需根据实际前处理进行调整）
+
+### Solid Sample (Feces, animal tissue, etc)
+
+Weight 20 mg sample to 2 mL EP tube. 1 mL75% MeOH was added and two 3.2 mm beads were added to the mixture. Samples were homogenized at 45 Hz for 4 min, and were sonicated in ice-water bath for 5 min. The homogenization and sonication cycle was repeated for 3 times. 100 μL sample was transferred to new EP tube, and 750 μL extraction agent (MTBE, containing internal standards) was added into sample. Samples were votexed for 40 sec and stands at room temperature for 30 min. Then 200 μL water was added. Samples were votexed for 20 sec and stands at room temperature for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer 700 μL supernatant of each sample to a 1.5 mL EP tube. 100 μL reconstitution solution (DCM:MeOH=1:1,v/v) was added. Samples were votexed for 20 sec and sonicated in ice-water bath for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer supernatant of each sample to glass vial for LC-MS/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+
+
+### Liquid Sample (Serum, plasma, saliva, bacterial fluid, juice, etc)
+
+The samples were thawed in ice water bath and was vortexed for 30s. 25 μL of liquid samples was mixed with 200 µL methanol and 750 MTBE (containing internal standard) and were vortexed for 40 s. The sample stands for 30 min at room temperature. Then 200 µL water was added. The sample was vortexed for 20 s and stand for 10 min at room temperature.Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer 700 μL supernatant of each sample to a 1.5 mL EP tube. 100 μL reconstitution solution (DCM:MeOH=1:1,v/v) was added. Samples were votexed for 20 sec and sonicated in ice-water bath for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer supernatant of each sample to glass vial for LC-MS/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+### Plant Sample (Flowers, roots, stems, seeds, fruits, leaves, etc)
+
+The freeze-dried samples were crushed with beads for 30 s at 60 Hz. Weight 20 mg sample to 2 mL EP tube. 1 mL75% MeOH was added and two 3.2 mm beads were added to the mixture. Samples were homogenized at 45 Hz for 4 min, and were sonicated in ice-water bath for 5 min. The homogenization and sonication cycle was repeated for 3 times. 100 μL sample was transferred to new EP tube, and 750 μL extraction agent (MTBE, containing internal standards) was added into sample. Samples were votexed for 40 sec and stands at room temperature for 30 min. Then 200 μL water was added. Samples were votexed for 20 sec and stands at room temperature for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer 700 μL supernatant of each sample to a 1.5 mL EP tube. 100 μL reconstitution solution (DCM:MeOH=1:1,v/v) was added. Samples were votexed for 20 sec and sonicated in ice-water bath for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer supernatant of each sample to glass vial for LC-MS/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+### Cell or Bacteria
+
+The cell pellets (about 106 cells) or bacteria pellets(about 106 bacteria) were taken, mixed with 200 µL methanol and 750 MTBE (containing internal standard) and were vortexed for 40 s. The sample stands for 30 min at room temperature. Then 200 µL water was added. The sample was vortexed for 20 s and stand for 10 min at room temperature. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer 700 μL supernatant of each sample to a 1.5 mL EP tube. 100 μL reconstitution solution (DCM:MeOH=1:1,v/v) was added. Samples were vortexed for 20 sec and sonicated in ice-water bath for 10 min. Then all the samples were centrifuged at 12000 rpm and 4 ℃ for 15 min. Transfer supernatant of each sample to glass vial for LC-MS/MS analysis. `r if(l.a$has_qc){'Pool equal amount of each sample as QC sample.'}`
+
+
+
+### 仪器条件 (Instrument Parameter)
+
+This project uses Shimazu Nexera Series ultra-high performance liquid chromatograph (UHPLC) for chromatographic separation of target compounds. RP system consisted of H2O:ACN:MeOH=1:1:1,v/v/v, containing 7 mmol/L ammonium acetate as mobile phase A. Phase B is an isopropyl alcohol solution containing 7 mmol/L ammonium acetate. Chromatographic separation of the target compounds was performed using a Kinetex C18 (2.1 mm × 100 mm, 2.6 μm, Phenomenex, USA) liquid chromatography column. Flow rate of mobile phase: 0.35 mL/min, column temperature: 45 ℃, sample injection temperature: 10 ℃, injection volume: 1 μL. HILIC liquid chromatography consisted of H2O:ACN=1:1,v/v, which contained 2 mmol/L ammonium acetate as mobile phase A. The B phase is DCM:ACN=1:13,v/v, which contains 2 mmol/L ammonium acetate. The target compounds were separated by Luna NH2 (Amino) 3μm (2x100 mm, 3μm, Phenomenex, USA) liquid chromatography column. Flow rate of mobile phase: 0.7 mL/min, column temperature: 40 ℃, sample injection  temperature: 10 ℃, injection volume: 1 μL. During data collection, mass spectrometry was performed using multiple reaction monitor (MRM) mode. The ion source parameters are as follows: IonSpray Voltage: +3000/-3000 V,Curtain Gas: 35 psi, Temperature: 400℃, Ion Source Gas 1:40 psi, Ion Source Gas 2: 70 psi.
+
+Mass spectrum data acquisition and quantitative analysis of target compounds were completed by SCIEX OS (3.3.1) and automated analysis software BIOTREE BioBud (v2.0.4).
+
+# 参考文献 {-}
+
+1. Dunn WB; Broadhurst D; Begley P; Zelena E; Francis-McIntyre S; Anderson N; Brown M; Knowles JD; Halsall A; Haselden JN; Nicholls AW; Wilson ID; Kell DB; Goodacre R; Human Serum Metabolome (HUSERMET) Consortium. Procedures for large-scale metabolic profiling of serum and plasma using gas chromatography and liquid chromatography coupled to mass spectrometry [J]. Nature Protocols, 2011, 6(7):1060-1083.
+
+2. Want E J, Wilson I D, Helen G, et al. Global metabolic profiling procedures for urine using UPLC-MS. [J]. Nature Protocol, 2010, 5(6):1005-18.
+
+3. Lam SM, Tian H, Shui G. Lipidomics, en route to accurate quantitation. Biochim Biophys Acta 2017, 1862(8): 752-61.
+4. Tu J, Yin Y, Xu M, Wang, Zhu Z-J. Absolute quantitative lipidomics reveals lipidome-wide alterations in aging brain. Metabolomics 2017, 14(1).
+
+5. Han X, Yang K, Gross RW. Multi-Dimensional Mass Spectrometry-Based Shotgun Lipidomics And Novel Strategies For Lipidomic Analyses.iews. 2012, 31(1): 134-178.
+
+6. Bielow C, Mastrobuoni G, Orioli M, Kempa S. On Mass Ambiguities in High-Resolution Shotgun Lipidomics. Anal Chem. 2017, 89: 2986-2994.
+
+7. Ovčačíková M, Lísa M, Cífková E, Holčapek M. Retention behavior of lipids in reversed-phase ultrahigh-performance liquid chromatography-electrospray ionization mass spectrometry. J. Chromatogr A. 2016, 10(1450), 76-85.
+
+8. Achieve broad lipid quantitation using a high-throughput targeted lipidomics method. SCIEX Technical Note RUO-MKT-02-8482-B.
+

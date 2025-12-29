@@ -1,0 +1,20 @@
+
+### 标准溶液配制
+
+准确称取相应量的标准品于10 mL容量瓶中，分别配制成10 mmol/L的标准品储备液。取相应量的标准品储备液于10 mL容量瓶中，配制成混合标准溶液。依次稀释该标准溶液得一系列校准溶液（含与样品中浓度一致的同位素标记内标混合物）。
+
+
+### 上机检测
+
+1) **色谱方法**
+
+本项目使用Vanquish (Thermo Fisher Scientific)超高效液相色谱仪，通过Waters ACQUITY UPLC BEH C18 (150 * 2.1 mm, 1.7 μm, Waters)液相色谱柱对目标化合物进行色谱分离。液相色谱A相为5 mmol/L的乙酸铵水溶液，B相为乙腈。柱温箱温度为45 ℃，样品盘设为4 ℃，进样体积为1 μL。
+
+2) **质谱方法**
+
+本项目使用Orbitrap Exploris 120高分辨质谱仪，以平行反应监测(Parallel Reaction Monitoring, PRM)模式进行质谱分析。离子源参数如下：Spray voltage = +3500/-3200 V, Sheath gas (N2) flow rate = 40, Aux gas (N2) flow rate = 15, Sweep gas (N2) flow rate = 0, Aux gas (N2) temperature = 350 ℃, Capillary temperature = 320 ℃。
+
+进行UHPLC-MS/MS分析之前，将目标化合物标准溶液引入质谱中。针对每个目标化合物，对其PRM参数进行优化；由于大多数胆汁酸类化合物的子离子谱中，都没有强度足够用于定量的子离子出现，所以选择了高分辨条件下的母离子进行定量，具体参数见Table S2。
+
+本项目中，所有数据采集工作均通过Analyst（1.7.3，SCIEX）和 Biotree Biobud (v2.0.4)来完成。
+

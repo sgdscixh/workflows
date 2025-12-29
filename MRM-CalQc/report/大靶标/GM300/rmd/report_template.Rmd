@@ -1,0 +1,366 @@
+---
+output:
+  bookdown::pdf_document2:
+    number_sections: true
+    fig_caption: true
+    toc: false
+    includes:
+      in_header: "include.tex"
+    latex_engine: xelatex
+bibliography: reference.bib
+biblio-style: unsrt
+---
+
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(readxl)
+library(kableExtra)
+library(knitr)
+library(pander)
+library(rmarkdown)
+# citation_package: natbib
+
+options(knitr.kable.NA = "")
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+
+
+
+
+## create table list
+qc_cpds <- l.a$get_table_quant(l.a=l.a, overwrite=TRUE,  filename = l.a$outTab)
+df_cals <- l.a$get_table_calib(l.a=l.a, overwrite=FALSE, filename = l.a$outTab)
+l.a$data_qc <- qc_cpds$qc
+l.a$has_qc <- !is.null(l.a$data_qc)
+l.a$cpds    <- qc_cpds$cpds
+
+
+
+## headMessage sheet-1 and path
+head_msg <- l.a$head_msg
+head_path <- l.a$head_path
+grp_types <- l.a$grp_type %>% stringi::stri_split(fixed = '|') %>% unlist()
+
+
+## Other table path
+other_table <- glue::glue("{rep}/{rpt}/others/Table.xlsx", rep=l.a$repDir, rpt=l.a$rpt_flow)
+
+
+## sampleInfo sheet-1
+spl_info <- l.a$spl_info
+spl_name_qc <- spl_info %>% filter(sample_type == "QC") %>% select(sample_name) %>% .[[1,1]]
+spl_name_sp <- spl_info %>% filter(sample_type == "SPL") %>% select(sample_name) %>% .[[1,1]]
+
+## path to TIC 
+fig_qc_0 <- sprintf("%s/figures/TIC/QC/%s.png", l.a$resDir, spl_name_qc)
+fig_sp_0 <- sprintf("%s/figures/TIC/SPL/%s.png", l.a$resDir, spl_name_sp)
+
+
+## path to RT profile
+fig_name_n <- 'RT-Control-Negative__0.png'
+fig_name_p <- 'RT-Control-Positive__0.png'
+fig_rt_0n <- glue::glue("{path}/figures/IS/{name}", path=l.a$resDir, name=fig_name_n)
+fig_rt_0p <- glue::glue("{path}/figures/IS/{name}", path=l.a$resDir, name=fig_name_p)
+
+
+# cover info
+project_code = l.a$head_msg["项目编号", 1]
+project_name = l.a$head_msg["项目名称", 1]
+custom_inst = l.a$head_msg["客户单位", 1]
+custom_name = l.a$head_msg["客户姓名", 1]
+
+```
+
+
+
+
+```{r cover, child=glue::glue("{rep}/{rpt}/rmd/cover_pdf.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+```
+
+
+```{r tables, child=glue::glue("{rep}/{rpt}/rmd/tables_pdf.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+# 样本基本信息
+
+# 实验信息
+
+## 仪器及试剂
+### 所用主要试剂
+### 实验仪器
+
+## 实验方法
+### 代谢物提取
+```
+
+
+```{r method, child=glue::glue("{rep}/{rpt}/rmd/method.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+### 上机检测
+#### 液相条件
+#### 质谱条件
+```
+
+
+
+\newpage
+
+## 实验结果
+```{r results, echo=FALSE, include=FALSE}
+fig_tic <- "图\\@ref(fig:tic11)-\\@ref(fig:tic12)和图\\@ref(fig:tic21)-\\@ref(fig:tic22)"
+
+tic1_cap1 <- glue::glue("{grp}标准品溶液 {spl} TIC图", spl=spl_name_qc, grp=grp_types[1]) %>% l.a$latex_escape()
+tic1_cap2 <- glue::glue("{grp}样品 {spl} TIC图", spl=spl_name_sp, grp=grp_types[1]) %>% l.a$latex_escape()
+
+tic2_cap1 <- glue::glue("{grp}标准品溶液 {spl} TIC图", spl=spl_name_qc, grp=grp_types[2]) %>% l.a$latex_escape()
+tic2_cap2 <- glue::glue("{grp}样品 {spl} TIC图", spl=spl_name_sp, grp=grp_types[2]) %>% l.a$latex_escape()
+
+```
+
+
+### 色谱分离
+
+通过总离子流图（TIC）`r fig_tic`可大致看到样本出峰和响应情况，横坐标为保留时间，纵坐标为物质的响应强度。 
+
+```{r tic11, fig.cap=tic1_cap1, out.width="100%"}
+
+fig_qc_0 %>% gsub(l.a$grp_type, grp_types[1], .) %>% include_graphics()
+
+```
+
+```{r tic12, fig.cap=tic1_cap2, out.width="100%"}
+
+fig_sp_0 %>% gsub(l.a$grp_type, grp_types[1], .) %>% include_graphics()
+
+```
+
+```{r tic21, fig.cap=tic2_cap1, out.width="100%"}
+
+fig_qc_0 %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
+
+```
+
+```{r tic22, fig.cap=tic2_cap2, out.width="100%"}
+
+fig_sp_0 %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
+
+```
+
+
+
+
+\newpage
+
+### 质量控制
+
+1、过程质控
+
+在检测过程中实时地监控仪器稳定性、信号是否正常十分重要。以混合样本溶液作为质控样本，在样本检测过程中每隔10个样本插入一个QC质控样本，通过对质控样本的数据进行分析来判断最终采集数据的质量，以便及时发现异常，尽早将问题排除，保证最终采集数据的质量。
+
+①	 内标保留时间质控
+
+```{r rt-qc, echo=FALSE, include=FALSE}
+fig_rts <- "图 \\@ref(fig:rts1)，\\@ref(fig:rts2)和\\@ref(fig:rts3)"
+qc_str <- ifelse(l.a$has_qc, "样品和QC", "样品")
+```
+
+内标保留时间越一致，说明仪器越稳定。由`r fig_rts`可以看到内标在`r qc_str`中的保留时间质控图，所有`r qc_str`的保留时间与预期保留时间均在±12 s以内。说明仪器数据采集稳定性很好。
+
+
+
+```{r rts1, fig.cap="内标保留时间质控图（GCMS）", out.width="100%"}
+fig_rt_0n %>% gsub(l.a$grp_type, grp_types[1], .) %>% include_graphics()
+
+```
+
+
+```{r rts2, fig.cap="正离子内标保留时间质控图（LCMS）", out.width="100%"}
+fig_rt_0p %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
+
+```
+
+```{r rts3, fig.cap="负离子内标保留时间质控图（LCMS）", out.width="100%"}
+fig_rt_0n %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
+
+```
+
+
+
+\newpage
+
+
+
+```{r qc-cor, include=l.a$has_qc, eval=l.a$has_qc}
+
+"
+②	QC样本相关性
+
+QC样品相关性越接近于1（应大于0.8），说明整个方法稳定性越好数据质量越高。从图 \\@ref(fig:cor1)和\\@ref(fig:cor2)我们可以看到QC样品相关性很高，说明本次实验数据质量很高。
+" %>% pander()
+
+```
+
+
+
+```{r cor1, include=l.a$has_qc, eval=l.a$has_qc, out.width="90%", fig.align='center', fig.cap=glue::glue("QC样本相关性图（{grp}）", grp=grp_types[1]), fig.pos="H"}
+# get correlation
+
+data_qc <- l.a$data_qc %>% filter(`$GRP_TYPE`==grp_types[1]) %>% select(-`$GRP_TYPE`)
+
+fig_path <- glue::glue('{res}/figures/QC-corrplot-{grp}.jpg', res=l.a$resDir, grp=grp_types[1])
+fig <- l.a$corr_plot(data_qc)
+
+ggsave(fig_path, fig, width = 35, height = 35, units = 'in', dpi = 300)
+
+fig_path %>% include_graphics()
+
+```
+
+
+```{r cor2, include=l.a$has_qc, eval=l.a$has_qc, out.width="90%", fig.align='center', fig.cap=glue::glue("QC样本相关性图（{grp}）", grp=grp_types[2]), fig.pos="H"}
+# get correlation
+
+data_qc <- l.a$data_qc %>% filter(`$GRP_TYPE`==grp_types[2]) %>% select(-`$GRP_TYPE`)
+
+fig_path <- glue::glue('{res}/figures/QC-corrplot-{grp}.jpg', res=l.a$resDir, grp=grp_types[2])
+fig <- l.a$corr_plot(data_qc)
+
+ggsave(fig_path, fig, width = 35, height = 35, units = 'in', dpi = 300)
+
+fig_path %>% include_graphics()
+
+```
+
+
+
+
+```{r is-rsd, include=l.a$has_qc, eval=l.a$has_qc}
+# output 1
+tx_is_rsd <- "
+2、内标质控
+
+① QC样品中内标响应稳定性
+
+内标为外源引入的同位素标记代谢物，QC样品中内标浓度相同，所以内标的响应差异越小（RSD≤20%），说明系统越稳定，数据质量越高。从表\\@ref(tab:rsd)中数据可以看到本次实验数据质量稳定。
+"
+pander(tx_is_rsd)
+
+```
+
+
+
+```{r rsd, include=l.a$has_qc, eval=l.a$has_qc}
+
+# get data.frame
+file_is <- paste0(l.a$resDir, '/Quantification-IS.xlsx')
+data_is <- l.a$get_table_sheet(file_is, sheet='merge', default="Statistics") %>% arrange(id) %>% select(-`$GRP_TYPE`)
+
+pos <- data_is %>% filter(polarity==1) %>% rename(`POS内标`="id", `响应RSD[%]`="RSD[%]") %>% select(-polarity)
+neg <- data_is %>% filter(polarity==2,id!="IS") %>% rename(`NEG内标`="id", `响应RSD[%]`="RSD[%]") %>% select(-polarity)
+gc_ <- data_is %>% filter(polarity==2,id=="IS") %>% rename(`NEG内标`="id", `响应RSD[%]`="RSD[%]") %>% select(-polarity)
+# 
+rsd_df <- data.frame(matrix(nrow=nrow(pos), ncol=6))
+rsd_df[1:2] <- pos
+rsd_df[3:4] <- neg
+rsd_df[1,5:6] <- gc_
+# 
+colnames(rsd_df) <- c("POS内标","RSD[%]", "NEG内标","RSD[%]", "内标","RSD[%]")
+
+# output
+rsd_df %>%
+  kbl("latex", booktabs = TRUE, caption = "QC样品中内标响应稳定性表") %>%
+  kable_styling(latex_options="striped") %>%
+  add_header_above(c("LC-MS/MS" = 4, "GC-MS" = 2))
+
+```
+
+
+
+### 标准曲线
+
+使用内标法建立标准曲线，横坐标为标准品浓度与内标浓度之比，纵坐标为标准品响应与内标响应之比，标准曲线相关系数满足>0.95，表示标准曲线定量准确可靠，具体线性方程表见附表。
+
+
+```{r spl-type, child=glue::glue("{rep}/{rpt}/rmd/{spl}_end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow, spl=l.a$spl_type)}
+```
+
+
+
+
+
+```{r en-end, child=glue::glue("{rep}/{rpt}/rmd/end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
+```
+
+
+
+
+
+
+
+
+```{r copy-fig, include=FALSE, eval=FALSE}
+## for large panel
+fig_tag <- '-merge'
+
+tic_fig <- glue::glue("{res}/figures/TIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+tic_new <- glue::glue("{out}/TIC-SPL{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(tic_fig,l.a$outDir)
+file.rename(tic_new, paste0(l.a$outDir,'/Figure S1-Sample TIC.pdf'))
+```
+
+
+
+```{r copy-data, include=FALSE}
+## copy mzml files
+d_data_1 <- paste(l.a$outData, grp_types[1], sep="/")
+d_data_2 <- paste(l.a$outData, grp_types[2], sep="/")
+d_data_1 %>% dir.create(recursive = TRUE)
+d_data_2 %>% dir.create(recursive = TRUE)
+
+d_cals_1 <- glue::glue("{d}/../Calibrator", d=l.a$inDir) %>% gsub(l.a$grp_type, grp_types[1], .)
+l.a$copy_file(d_base=d_cals_1, d_sub="CAL", patt="mzML$|CDF$", d_dest=d_data_1)
+l.a$inDir %>% gsub(l.a$grp_type, grp_types[1], .) %>% l.a$copy_file(d_sub="SPL", patt="mzML$|CDF$", d_dest=d_data_1)
+
+
+
+d_cals_2 <- glue::glue("{d}/../Calibrator", d=l.a$inDir) %>% gsub(l.a$grp_type, grp_types[2], .)
+l.a$copy_file(d_base=d_cals_2, d_sub="CAL", patt="mzML$|CDF$", d_dest=d_data_2)
+l.a$inDir %>% gsub(l.a$grp_type, grp_types[2], .) %>% l.a$copy_file(d_sub="SPL", patt="mzML$|CDF$", d_dest=d_data_2)
+
+```
+
+
+
+```{r copy-extra, include=FALSE, eval=FALSE}
+
+## copy calibrator figures
+fig_tag <- '-merge'
+cal_fig <- glue::glue("{res}/figures/Calibrators.best{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+new_fig <- glue::glue("{out}/Calibrators.best{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(cal_fig,l.a$outDir)
+file.rename(new_fig, paste0(l.a$outDir,'/Figure S1-Calibration.pdf'))
+
+
+
+
+## for small panel
+if(is.null(l.a$data_qc)) {
+  file.remove(
+    paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx")
+  )
+  file.rename(
+    paste0(l.a$outDir, "/Table S5-Quantification Results.xlsx"),
+    paste0(l.a$outDir, "/Table S4-Quantification Results.xlsx")
+  )
+}
+xic_fig <- glue::glue("{res}/figures/XIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+xic_new <- glue::glue("{out}/XIC-SPL{tag}.pdf", res=l.a$outDir, tag=fig_tag)
+file.copy(xic_fig,l.a$outDir)
+file.rename(xic_new, paste0(l.a$outDir,'/Figure S2-Sample XIC.pdf'))
+
+
+## copy other tables for small
+d_others <- glue::glue("{rep}/{rpt}/others/", rep=l.a$repDir, rpt=l.a$rpt_flow)
+file_cp <- grep('Table S', list.files(d_others), value=T)
+file.copy(paste0(d_others, file_cp), l.a$outDir)
+
+```
+
+

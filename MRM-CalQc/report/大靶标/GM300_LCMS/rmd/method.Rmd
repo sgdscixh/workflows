@@ -1,0 +1,11 @@
+
+### 标准曲线
+
+配制标准品混合溶液，依次稀释为一系列浓度的标准溶液进行上机检测，以绘制标准曲线。
+
+### 上机检测
+
+LC-MS/MS检测，使用Agilent 1290 Infinity II 超高效液相色谱仪，通过ACQUITY UPLC BEH C18 Column(1.7 µm, 2.1 mm *150 mm)液相色谱柱对目标化合物进行色谱分离[@UPLC-BEH-C18]。液相色谱A相为超纯水，含0.1% 甲酸，B相为甲醇：超纯水=95：5，含10 mmol/L甲酸铵[@bile-acids]。样品盘温度：6 ℃，进样体积：1 μL。使用装备IonDrive Turbo V ESI离子源的 SCIEX Triple Quad 6500+三重四极杆质谱仪，以多反应监测 (MRM) 模式进行质谱采集[@ion-switching]。离子源参数：Curtain Gas = 35 psi, IonSpray Voltage = +5000 V/-4500V, Temperature =450℃, Ion Source Gas 1 = 50 psi, Ion Source Gas 2 = 50 psi. 质谱数据采集及目标化合物定量分析工作[@annotation-guide]均通过SCIEX Analyst Work Station Software(1.7.3)和自动化分析软件BIOTREE BioBud (v2.0.4)来完成。
+
+质谱数据采集及目标化合物定量分析工作均通过Agilent MassHunter Workstation(10.2)和自动化分析软件BIOTREE BioBud (v2.0.4)来完成。
+

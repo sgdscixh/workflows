@@ -1,0 +1,86 @@
+
+
+# 样本基本信息
+
+
+```{r spl-msg}
+data_group <- read.xlsx(head_path, sheet = 2)
+
+if(sum(colnames(data_group) == '样本分组') > 1) {
+  sum_spl <- sum(data_group[,colnames(data_group) == '样本数量'], na.rm = T)
+  rel_spl <- sum(data_group[,colnames(data_group) == '实验检测'], na.rm = T)
+} else {
+  sum_spl <- sum(as.numeric(unlist(data_group[data_group$组别 == '样本数量', -1])), na.rm = T)
+  rel_spl <- sum(as.numeric(unlist(data_group[data_group$组别 == '实验检测', -1])), na.rm = T)
+} 
+
+str <- glue::glue(
+  "共收到客户提供的{sum_spl}例{spl_name}样本，实际检测{rel_spl}例{spl_name}样本。",
+  sum_spl=sum_spl,
+  spl_name=l.a$spl_name,
+  rel_spl=rel_spl
+  )
+
+pander(str)
+```
+
+
+```{r spl-tab, position = "H"}
+n_col <- ncol(data_group)
+kbl(data_group, "latex", booktabs = TRUE, caption = "样本信息表") %>%
+  kable_styling(latex_options="striped") %>%
+  column_spec(1, width = "5em")
+
+```
+
+*注：①样本收到后，立即保存在-80℃低温冰箱中，直至实验检测；②为了更好地进行实验，对样本进行了重新编号，详细见“Table S0-样本编号对应表”（若未重新编号则无该表）。*
+
+# 实验信息
+
+## 仪器及试剂
+
+### 所用主要试剂
+
+```{r reagent, position = "H"}
+read.xlsx(other_table, sheet="实验试剂列表", colNames = T, rowNames = F) %>%
+  kbl("latex", booktabs = TRUE, caption = "所用主要试剂基本信息") %>%
+  kable_styling(latex_options="striped")
+
+```
+
+### 实验仪器
+
+```{r inst}
+read.xlsx(other_table, sheet="实验仪器列表", colNames = T, rowNames = F) %>%
+  kbl("latex", booktabs = TRUE, caption = "所用主要仪器平台基本信息") %>%
+  kable_styling(latex_options="striped")
+```
+
+
+\newpage
+
+## 实验方法
+
+### 实验流程
+
+```{r assay-flow, fig.cap="实验分析流程图", out.width="75%", fig.align='center', position="H"}
+glue::glue("{rep}/{rpt}/others/实验分析流程图.jpg", rep=l.a$repDir, rpt=l.a$rpt_flow) %>%include_graphics()
+
+```
+
+
+
+### 样本预处理
+
+```{r extract}
+## extract method based on sample type
+extract <- read.xlsx(head_path, sheet = grep(l.a$spl_type, excel_sheets(head_path))) %>% tibble()
+if(!l.a$has_qc) extract <- extract[1:(nrow(extract)-1), ]
+
+extract %>%
+  kbl("latex", booktabs = TRUE, caption = "样品前处理步骤") %>%
+  kable_styling(latex_options="striped") %>%
+  column_spec(1, width = "15cm")
+```
+
+
