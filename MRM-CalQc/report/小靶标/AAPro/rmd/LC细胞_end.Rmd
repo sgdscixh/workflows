@@ -2,9 +2,9 @@
 ### 样本中目标代谢物检测结果
 
 **计算公式：**
-$C_M[nmol/10^7 cells] = \frac{C_C[nmol/L] \times V_E[\mu L]}{N[10^7 Cell] \times 1000000 }$
+$C_M[nmol/10^7 cells] = \frac{C_C[nmol/L] \times V_E[\mu L] \times D_F}{N[10^7 Cell] \times 1000000 \times C_F}$
 
 
 式中：
 
-C~C~ (Calculated Concentration, nmol/L)为计算浓度，即样本数据代入标曲计算浓度；C~M~ (Metabolite Concentration, nmol/10^7 Cell) 样品中目标代谢物浓度，等于计算浓度C~C~ 乘以提取液总体积VE (Extration Volume, mL)，除以取样含细胞量N，除以1000000。“0”表示目标化合物在该样本中无检出。
+C~C~ (Calculated Concentration, nmol/L)为计算浓度，即样本数据代入标曲计算浓度；C~M~ (Metabolite Concentration, nmol/10^7 Cell) 样品中目标代谢物浓度，等于计算浓度C~C~ 乘以提取液总体积VE (Extration Volume, µL)，除以取样含细胞量N，除以1000000，乘以稀释因子D~F~，除以浓缩因子C~F~。“0”表示目标化合物在该样本中无检出。

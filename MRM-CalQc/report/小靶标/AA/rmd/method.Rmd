@@ -18,4 +18,4 @@
 
 进行UHPLC-MS/MS分析之前，将目标化合物标准溶液引入质谱中。针对每个目标化合物，选取信号强度最高的数个母离子-子离子对(transition)，对其MRM参数进行优化，并选取其中响应最好的离子对用于定量分析，其它离子对用于目标化合物定性分析，具体参数见Table S2。
 
-本项目中，所有质谱数据采集及目标化合物定量分析工作，均通过Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies)和Biotree Biobud (v2.0.3)来完成。
+本项目中，所有质谱数据采集及目标化合物定量分析工作，均通过Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies)和Biotree Biobud (v2.0.4)来完成。

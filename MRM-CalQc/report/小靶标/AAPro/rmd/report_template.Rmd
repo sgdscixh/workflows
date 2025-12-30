@@ -1,6 +1,7 @@
 ---
 output:
   bookdown::pdf_document2:
+    citation_package: natbib
     number_sections: true
     fig_caption: true
     toc: false
@@ -8,6 +9,7 @@ output:
       in_header: "include.tex"
     latex_engine: xelatex
 bibliography: reference.bib
+biblio-style: unsrt
 ---
 
 
@@ -19,9 +21,20 @@ library(knitr)
 library(pander)
 library(rmarkdown)
 
-# citation_package: natbib
+
 options(knitr.kable.NA = "")
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+
+## check sample count for SPL type
+spl_count <- l.a$spl_info %>% 
+  filter(sample_type == "SPL") %>% 
+  select(sample_name) %>% 
+  distinct() %>% 
+  nrow()
+
+## determine if QC analysis should be performed
+should_run_qc <- spl_count >= 12
+
 
 
 
@@ -31,7 +44,8 @@ f_quant <- paste0(l.a$outDir, "/Table S5-Quantification Results.xlsx")
 qc_cpds <- l.a$get_table_quant(l.a=l.a, overwrite=TRUE, filename = f_quant)
 l.a$cpds <- qc_cpds$cpds
 l.a$data_qc <- qc_cpds$qc
-l.a$has_qc <- !is.null(l.a$data_qc)
+# l.a$has_qc <- !is.null(l.a$data_qc)
+l.a$has_qc <- !is.null(l.a$data_qc) && should_run_qc
 
 if(!l.a$has_qc) file.rename(f_quant, paste0(l.a$outDir, "/Table S4-Quantification Results.xlsx"))
 
@@ -113,7 +127,8 @@ custom_name = l.a$head_msg["客户姓名", 1]
 将校准溶液依次稀释2倍后进行UHPLC-MRM-MS分析，通过其信噪比来计算方法的检出限和定量限。方法 最低检出限(LLOD)定义为信噪比为3时所对应的化合物浓度，方法最低定量限(LLOQ)定义为信噪比为10时所 对应的化合物浓度(US FDA guideline for bioanalytical method validation)。
 
 
-```{r acc-rsd-cn, eval=l.a$has_qc}
+<!-- ```{r acc-rsd-cn, eval=l.a$has_qc} -->
+```{r acc-rsd-cn, eval=l.a$has_qc && should_run_qc}
 "
 ### 方法精密度及准确度
 
@@ -177,9 +192,10 @@ scores <- min(data_cal$`R^2`)
 
 
 
-```{r qc-acc, eval=l.a$has_qc}
-acc_max <- 30
-rsd_max <- 30
+<!-- ```{r qc-acc, eval=l.a$has_qc} -->
+```{r qc-acc, eval=l.a$has_qc && should_run_qc}
+acc_max <- l.a$acc_max
+rsd_max <- l.a$rsd_max
 f_acc_rsd <- paste0(l.a$outDir, "/Table S4-Accuracy and RSD.xlsx")
 data_rsd <- l.a$get_table_stats(l.a, filename=f_acc_rsd, fill=rsd_max)
 

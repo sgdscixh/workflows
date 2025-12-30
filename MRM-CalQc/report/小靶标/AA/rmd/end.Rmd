@@ -26,7 +26,7 @@ An Agilent 6460 triple quadrupole mass spectrometer (Agilent Technologies), equi
 
 The MRM parameters for each of the targeted analytes were optimized using flow injection analysis, by injecting the standard solutions of the individual analytes, into the ESI source of the mass spectrometer. Several most sensitive transitions were used in the MRM scan mode to optimize the collision energy for each Q1/Q3 pair (Table S2). Among the optimized MRM transitions per analyte, the Q1/Q3 pairs that showed the highest sensitivity and selectivity were selected as "quantifier" for quantitative monitoring. The additional transitions acted as "qualifier" for the purpose of verifying the identity of the target analytes.
 
-Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies) and Biotree BioBud (v2.0.3) were employed for MRM data acquisition.
+Agilent MassHunter Work Station Software (B.08.00, Agilent Technologies) and Biotree BioBud (v2.0.4) were employed for MRM data acquisition.
 
 
 ### 标准曲线 (Standard Solution Preparation)
