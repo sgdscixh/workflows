@@ -65,6 +65,13 @@ ArgsVerify <- function(inDir, repDir, repLogo) {
       code = headMessage["项目编号", 1],
       name = headMessage["客户姓名", 1]
     )
+  outDirWord <-
+    glue::glue(
+      "{wd}/{code}-Experimental-Word-Report",
+      wd = inDir,
+      code = headMessage["项目编号", 1],
+      name = headMessage["客户姓名", 1]
+    )
   outData <-
     glue::glue(
       "{wd}/{code}-RawData",
@@ -83,7 +90,7 @@ ArgsVerify <- function(inDir, repDir, repLogo) {
   outWord <-
     glue::glue(
       "{out}/{code}-{name}-{type}.docx",
-      out = outDir,
+      out = outDirWord,
       code = headMessage["项目编号", 1],
       name = headMessage["客户姓名", 1],
       type = headMessage["项目名称", 1]
@@ -530,6 +537,7 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   library(gridExtra)
   l.a <<- ArgsVerify(inDir, repDir, repLogo)
   if (!file.exists(l.a$outDir)) dir.create(l.a$outDir)
+  if (!file.exists(l.a$outWord)) dir.create(dirname(l.a$outWord), recursive = TRUE)
   sprintf("chmod -R 777 '%s'", l.a$outDir) %>% system()
 
   report_rmd <- glue::glue("{rep}/{rpt}/rmd/", rep = l.a$repDir, rpt = l.a$rpt_flow)
@@ -559,6 +567,7 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   }
   glue::glue("{py} {rep}/FeishuRecord.py {ind}", py = python, rep = rep_dir, ind = l.a$inDir) %>% system()
   glue::glue("{py} {rep}/Sample_Info.py {ind} {out}", py = python, rep = rep_dir, ind = l.a$inDir, out = l.a$outDir) %>% system()
+  glue::glue("{py} {rep}/ExpDataPack.py {ind}", py = python, rep = rep_dir, ind = l.a$inDir) %>% system()
   paste0(l.a$outDir, "/rmd") %>% unlink(recursive = TRUE)
 }
 

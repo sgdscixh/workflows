@@ -1,6 +1,0 @@
-
-### 定量结果
- 
-样本中各目标代谢物的定量结果见附表，C~C~ (Calculated Concentration, nmol/L) 为下机浓度，即样本数据带入标曲计算浓度，计算得出；C~M~ (Metabolite Concentration, nmol/g protein) 样品中目标代谢物浓度，等于下机浓度C~C~ (Calculated Concentration, nmol/L)乘以提取液体积V~E~ (µL)，除以取样含蛋白量m（mg)，除以1000。0表示该样品中无目标代谢物检出。
-
-**计算公式：C~M~[nmol/g protein] = C~C~[nmol/L] * V~E~[µL] / m[mg protein] / 1000**

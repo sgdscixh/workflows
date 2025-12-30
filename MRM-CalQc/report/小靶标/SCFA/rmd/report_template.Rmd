@@ -19,11 +19,11 @@ library(kableExtra)
 library(knitr)
 library(pander)
 library(rmarkdown)
-library(tibble)
+library(tibble) 
 
 # citation_package: natbib
 options(knitr.kable.NA = "")
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 
 
 
@@ -31,14 +31,14 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 ## create quantification
 # f_quant <- paste0(l.a$outDir, "/Table S5-Quantification Results.xlsx")
 f_quant <- paste0(l.a$outDir, "/定量结果-内标法（自动积分表格合并）.xlsx")
-qc_cpds <- l.a$get_table_quant(l.a = l.a, overwrite = TRUE, filename = f_quant, sheet = "--")
+qc_cpds <- l.a$get_table_quant(l.a=l.a, overwrite=TRUE, filename = f_quant, sheet="--")
 
 
 l.a$cpds <- qc_cpds$cpds
 l.a$data_qc <- qc_cpds$qc
 l.a$has_qc <- !is.null(l.a$data_qc)
 
-if (!l.a$has_qc) file.rename(f_quant, paste0(l.a$outDir, "/Table S4-Quantification Results.xlsx"))
+if(!l.a$has_qc) file.rename(f_quant, paste0(l.a$outDir, "/Table S4-Quantification Results.xlsx"))
 
 
 
@@ -47,41 +47,35 @@ if (!l.a$has_qc) file.rename(f_quant, paste0(l.a$outDir, "/Table S4-Quantificati
 # headMessage sheet-1 and path
 head_msg <- l.a$head_msg
 head_path <- l.a$head_path
-grp_types <- l.a$grp_type %>%
-  stringi::stri_split(fixed = "|") %>%
-  unlist()
+grp_types <- l.a$grp_type %>% stringi::stri_split(fixed = '|') %>% unlist()
 l.a$fig_tag <- ifelse(is.na(l.a$grp_type), "", "-merge")
 
 ## Other table path
-other_table <- glue::glue("{rep}/{rpt}/others/Table.xlsx", rep = l.a$repDir, rpt = l.a$rpt_flow)
+other_table <- glue::glue("{rep}/{rpt}/others/Table.xlsx", rep=l.a$repDir, rpt=l.a$rpt_flow)
 
 
 
 ## sampleInfo sheet-1
-if (l.a$has_qc) {
-  spl_name_qc <- l.a$spl_info %>%
-    filter(sample_type == "QC") %>%
-    select(sample_name) %>%
-    .[[1, 1]]
-  fig_qc_0 <- sprintf("%s/figures/TIC/QC/%s.png", l.a$resDir, spl_name_qc)
-} else {
+if (l.a$has_qc){
+  spl_name_qc <- l.a$spl_info %>% filter(sample_type == "QC") %>% select(sample_name) %>% .[[1,1]]
+  fig_qc_0 <- sprintf("%s/figures/TIC/QC/%s.png",  l.a$resDir, spl_name_qc)
+}else{
   spl_name_qc <- "HQC"
-  fig_qc_0 <- sprintf("%s/../../Calibrator/results/figures/TIC/QC/%s.pdf", l.a$resDir, spl_name_qc)
+  fig_qc_0 <- sprintf("%s/../../Calibrator/results/figures/TIC/QC/%s.pdf",  l.a$resDir, spl_name_qc)
 }
 
-spl_name_sp <- l.a$spl_info %>%
-  filter(sample_type == "SPL") %>%
-  select(sample_name) %>%
-  .[[1, 1]]
+spl_name_sp <- l.a$spl_info %>% filter(sample_type == "SPL") %>% select(sample_name) %>% .[[1,1]]
 fig_sp_0 <- sprintf("%s/figures/TIC/SPL/%s.pdf", l.a$resDir, spl_name_sp)
 
 
 
 # cover info
-project_code <- l.a$head_msg["项目编号", 1]
-project_name <- l.a$head_msg["项目名称", 1]
-custom_inst <- l.a$head_msg["客户单位", 1]
-custom_name <- l.a$head_msg["客户姓名", 1]
+project_code = l.a$head_msg["项目编号", 1]
+project_name = l.a$head_msg["项目名称", 1]
+custom_inst = l.a$head_msg["客户单位", 1]
+custom_name = l.a$head_msg["客户姓名", 1]
+
+
 ```
 
 
@@ -120,22 +114,22 @@ custom_name <- l.a$head_msg["客户姓名", 1]
 
 
 ```{r cals}
-df_cals <-
-  glue::glue("{l.a$resDir}/Calibrators.best.xlsx") %>%
-  read.xlsx() %>%
-  tibble() %>%
+df_cals <- 
+  glue::glue("{l.a$resDir}/Calibrators.best.xlsx") %>% 
+  read.xlsx() %>% tibble() %>%
   mutate(
     `物质名称` = Compound.Name,
-    `保留时间（min）` = round(rt_sec, 1) / 60,
+    `保留时间（min）` = round(rt_sec, 1)/60,
     `标曲方程` = label %>% str_extract("Y = .+(?=;)"),
     `相关系数R^2` = round(score, 4),
-    `标曲范围` = paste(round(xmin, 2), round(xmax, 2), sep = " ~ "),
-  ) %>%
+    `标曲范围` = paste(round(xmin, 2), round(xmax, 2), sep=" ~ "),
+    ) %>%
   rowid_to_column("编号") %>% # 这里创建了名为“编号”的新列
-  select(`编号`, `物质名称`, `保留时间（min）`, `标曲方程`, `相关系数R^2`, `标曲范围`)
+  select(`编号`,`物质名称`,`保留时间（min）`, `标曲方程`,`相关系数R^2`,`标曲范围`)
 df_cals %>%
-  kbl("latex", booktabs = TRUE, longtable = TRUE, caption = "保留时间指数表", align = "l", font_size = 10) %>%
-  kable_styling(latex_options = c("striped", "repeat_header"), font_size = 10)
+  kbl("latex", booktabs = TRUE, caption = "保留时间指数表", align = "l") %>%
+  kable_styling(latex_options="striped")
+
 ```
 
 
@@ -143,17 +137,21 @@ df_cals %>%
 
 ## 实验结果
 ```{r results, include=FALSE}
-tic_cap1 <- glue::glue("标准品溶液 {spl} GC-MS 总离子流图", spl = spl_name_qc, grp = grp_types[1]) %>% l.a$latex_escape()
-tic_cap2 <- glue::glue("样品 {spl} GC-MS 总离子流图", spl = spl_name_sp, grp = grp_types[1]) %>% l.a$latex_escape()
+tic_cap1 <- glue::glue("标准品溶液 {spl} GC-MS 总离子流图", spl=spl_name_qc, grp=grp_types[1]) %>% l.a$latex_escape()
+tic_cap2 <- glue::glue("样品 {spl} GC-MS 总离子流图", spl=spl_name_sp, grp=grp_types[1]) %>% l.a$latex_escape()
 ```
 
 
 ```{r tic1, fig.cap=tic_cap1, out.width="100%"}
+
 fig_qc_0 %>% include_graphics()
+
 ```
 
 ```{r tic2, fig.cap=tic_cap2, out.width="100%"}
+
 fig_sp_0 %>% include_graphics()
+
 ```
 
 \newpage
@@ -163,8 +161,9 @@ fig_sp_0 %>% include_graphics()
 每10个样本插入一个QC标样，通过QC标样的浓度回读判断标准曲线的准确性和仪器系统的稳定性，若QC准确度为80%~120%，则说明实验过程在控制范围内。QC的RSD ≤20%，说明系统稳定运行。
 
 ```{r qc-acc}
-data_rsd <- l.a$get_table_stats(l.a, filename = NA, fill = NA, sheet = "--")
-# data_rsd %>%
+
+data_rsd <- l.a$get_table_stats(l.a, filename=NA, fill=NA, sheet="--")
+#data_rsd %>%
 #  kbl("latex", booktabs = TRUE, caption = "QC准确度") %>%
 #  kable_styling(latex_options="striped")
 # 处理数据框
@@ -177,8 +176,9 @@ data_rsd_modified <- data_rsd %>%
 
 # 渲染表格
 data_rsd_modified %>%
-  kbl("latex", booktabs = TRUE, caption = "QC准确度", longtable = TRUE, align = "l") %>%
+  kbl("latex", booktabs = TRUE, caption = "QC准确度", longtable = TRUE,align = "l") %>%
   kable_styling(latex_options = c("striped", "repeat_header"))
+
 ```
 
 
@@ -186,6 +186,7 @@ data_rsd_modified %>%
 
 ```{r spl-type, child=glue::glue("{rep}/{rpt}/rmd/{spl}_end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow, spl=l.a$spl_type)}
 ### 定量结果
+
 ```
 
 
@@ -203,6 +204,7 @@ data_rsd_modified %>%
 
 ```{r en-end, child=glue::glue("{rep}/{rpt}/rmd/end.Rmd", rep=l.a$repDir, rpt=l.a$rpt_flow)}
 ## 英文参考步骤（使用时英文方法需根据实际前处理进行调整）
+
 ```
 
 
@@ -212,21 +214,22 @@ data_rsd_modified %>%
 
 ## copy calibrator figures
 fig_tag <- l.a$fig_tag
-cal_fig <- glue::glue("{res}/figures/Calibrators.best{tag}.pdf", res = l.a$resDir, tag = fig_tag)
-new_fig <- glue::glue("{out}/Calibrators.best{tag}.pdf", out = l.a$outDir, tag = fig_tag)
-file.copy(cal_fig, l.a$outDir)
-file.rename(new_fig, paste0(l.a$outDir, "/Figure S1-Calibration.pdf"))
+cal_fig <- glue::glue("{res}/figures/Calibrators.best{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+new_fig <- glue::glue("{out}/Calibrators.best{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(cal_fig,l.a$outDir)
+file.rename(new_fig, paste0(l.a$outDir,'/Figure S1-Calibration.pdf'))
 
-#
-tic_fig <- glue::glue("{res}/figures/TIC/SPL/TIC-SPL{tag}.pdf", res = l.a$resDir, tag = fig_tag)
-tic_new <- glue::glue("{out}/TIC-SPL{tag}.pdf", out = l.a$outDir, tag = fig_tag)
-file.copy(tic_fig, l.a$outDir)
-file.rename(tic_new, paste0(l.a$outDir, "/Figure S2-Sample TIC.pdf"))
+# 
+tic_fig <- glue::glue("{res}/figures/TIC/SPL/TIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+tic_new <- glue::glue("{out}/TIC-SPL{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(tic_fig,l.a$outDir)
+file.rename(tic_new, paste0(l.a$outDir,'/Figure S2-Sample TIC.pdf'))
 
 
 ## copy other tables for small
-d_others <- glue::glue("{rep}/{rpt}/others/SCFA-Targeted Analyte Information.xlsx", rep = l.a$repDir, rpt = l.a$rpt_flow)
+d_others <- glue::glue("{rep}/{rpt}/others/SCFA-Targeted Analyte Information.xlsx", rep=l.a$repDir, rpt=l.a$rpt_flow)
 file.copy(d_others, l.a$outDir)
+
 ```
 
 

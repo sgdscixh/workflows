@@ -1,0 +1,19 @@
+## 英文参考步骤
+
+***固体样本处理步骤：***
+
+Take sample into the 2 mL EP tubes, extracted with 500 μL extracting solution (VIsopropanol:Vn-Hexane=2:3, containing 0.2mg/L internal standard), vortex mixing for 30s. Homogenized in ball mill for 4 min at 40 Hz, then ultrasound treated for 5 min (incubated in ice water). Centrifuge for 15 min at 12000 rpm, 4 °C.Transfer the supernatant into a fresh 1.5 mL EP tubes. Add 500μL of extract solution (VIsopropanol:Vn-Hexane=2:3, containing 0.2mg/L internal standard) to the remaining samples, vortex mixing for 30 s, repeat steps 2, 3. The supernatant from step 5 and step 3 were combined and vortexed for 10 s. Transfer the supernatant 800 μL into a fresh 2 mL EP tubes. Nitrogen blow dry. Add 500 μL of methanol:trimethylsilyl diazomethane solution (1:2) , standing at room temperature for 30 min. Nitrogen blow dry. Add 160μL of n-Hexane and redissolve；Centrifuge for 1 min at 12000 rpm. Transfer the supernatant into a fresh vial for GC-MS analysis.
+
+***液体样本处理步骤：***
+
+Take 50μL sample into the 2 mL EP tubes, extracted with 450 μL extracting solution (VIsopropanol:Vn-Hexane=2:3, containing 0.21mg/L internal standard), vortex mixing for 30s. Ultrasound treated for 10 min (incubated in ice water). Centrifuge for 15 min at 12000 rpm, 4 °C. Transfer the supernatant into a fresh 2 mL EP tubes. Add 500μL of extract solution (VIsopropanol:Vn-Hexane=2:3, containing 0.21mg/L internal standard) to the remaining samples, vortex mixing for 30 s, repeat steps 2, 3. The supernatant from step 5 and step 3 were combined and vortexed for 30 s. Take 800 μL of the combined supernatant and nitrogen blow dry. Add 500 μL of methanol:trimethylsilyl diazomethane solution (1:2) , standing at room temperature for 30 min. Nitrogen blow dry. Add 160μL of n-Hexane and redissolve；Centrifuge for 1 min at 12000 rpm. Transfer the supernatant into a fresh vial for GC-MS analysis.
+***细胞样本处理步骤：***
+
+150 μL water was added to the samples. After 30 s vortex, the samples were freezed and thawedwith liquid nitrogen for 3 times. the samples were sonicated for 10 min in ice-water bath. Add 400 μL extracting solution (VIsopropanol:Vn-Hexane=2:3, containing 0.22mg/L internal standard) ,vortex mixing for 30 s.
+Ultrasound treated for 10 min (incubated in ice water). Centrifuge for 15 min at 12000 rpm, 4 °C. Transfer the supernatant into a fresh 2 mL EP tubes. Add 500 μL extracting solution (VIsopropanol:Vn-Hexane=2:3, containing 0.22mg/L internal standard),vortex mixing for 30 s. Ultrasound treated for 10 min (incubated in ice water). Centrifuge for 15 min at 12000 rpm, 4 °C.The supernatant from step 5 and step 7 were combined and vortexed for 30 s. Transfer the supernatant 800 μL into a fresh 2 mL EP tubes; 
+Nitrogen blow dry; Add 500 μL of methanol:trimethylsilyl diazomethane solution (1:2) , standing at room temperature for 30 min.Nitrogen blow dry; Add 160μL of n-Hexane and redissolve；Centrifuge for 1 min at 12000 rpm. Transfer the supernatant into a fresh vial for GC-MS analysis.
+
+***仪器条件（GC-MS Analysis）***
+
+GC-MS analysis was performed using an Agilent 7890B gas chromatograph system coupled with a Agilent 5977B mass spectrometer. The system utilized a DB-FastFAME capillary column. A 1 μL aliquot of the analyte was injected in split mode (5:1). Helium was used as the carrier gas, the front inlet purge flow was 3 mL min−1, and the gas flow rate through the column was 46 psi with 
+constant pressure. The initial temperature was kept at 50 °C hold on 1 min; raised to 200 °C at a rate of 50°C min−1, hold on 15 min; raised to 210 °C at a rate of 2 °C min−1, hold on 1 min; raised to 230 °C at a rate of 10 °C min−1, hold on 15 min. The injection, transfer line, quad and ion source temperatures were 240 °C, 240 °C, 230 °C and 150 °C. The energy was -70 eV in electron impact mode. The mass spectrometry data were acquired in SIM mode after a solvent delay of 7 min.

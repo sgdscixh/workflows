@@ -1,0 +1,10 @@
+
+### 样本中目标代谢物检测结果
+
+**计算公式：**
+$C_M[ug/mL] = \frac{C_C[ug/mL] \times V_E[\mu L] \times D_F}{V_S[\mu L] \times C_F}$
+
+式中：
+
+
+C~C~ (Calculated Concentration, ug/mL)为下机浓度，即样本面积/同类内标面积=样本浓度/同类内标浓度，计算得出；C~M~ (Metabolite Concentration,ug/mL) 样品中目标代谢物浓度，等于下机浓度C~C~ (Calculated Concentration, ug/mL)乘以提取液体积V~E~ (Extration Volumn, μL)，乘以稀释因子D~F~ (Dilution Factor)，除以取样量V~S~ (Sample Volume, μL)，除以浓缩因子C~F~(Concentration Factor)。

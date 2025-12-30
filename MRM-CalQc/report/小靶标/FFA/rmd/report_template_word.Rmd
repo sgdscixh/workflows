@@ -138,18 +138,18 @@ l.a$get_table_calib(l.a, filename=NA, sheet="--") %>%
 
 ## 实验结果
 ```{r results, include=FALSE}
-xic_cap1 <- glue::glue("标准品溶液 {spl} GC-MS 总离子流图", spl=spl_name_qc, grp=grp_types[1])
-xic_cap2 <- glue::glue("样品 {spl} GC-MS 总离子流图", spl=spl_name_sp, grp=grp_types[1])
+tic_cap1 <- glue::glue("标准品溶液 {spl} GC-MS 总离子流图", spl=spl_name_qc, grp=grp_types[1])
+tic_cap2 <- glue::glue("样品 {spl} GC-MS 总离子流图", spl=spl_name_sp, grp=grp_types[1])
 ```
 
 
-```{r xic1, fig.cap=xic_cap1, out.width="100%"}
+```{r tic1, fig.cap=tic_cap1, out.width="100%"}
 
 fig_qc_0 %>% include_graphics()
 
 ```
 
-```{r xic2, fig.cap=xic_cap2, out.width="100%"}
+```{r tic2, fig.cap=tic_cap2, out.width="100%"}
 
 fig_sp_0 %>% include_graphics()
 
@@ -215,10 +215,10 @@ file.copy(cal_fig,l.a$outDir)
 file.rename(new_fig, paste0(l.a$outDir,'/Figure S1-Calibration.pdf'))
 
 # 
-xic_fig <- glue::glue("{res}/figures/TIC/SampleType-TIC{tag}.pdf", res=l.a$resDir, tag=fig_tag)
-xic_new <- glue::glue("{out}/SampleType-TIC{tag}.pdf", out=l.a$outDir, tag=fig_tag)
-file.copy(xic_fig,l.a$outDir)
-file.rename(xic_new, paste0(l.a$outDir,'/Figure S2-Sample TIC.pdf'))
+tic_fig <- glue::glue("{res}/figures/TIC/SPL/TIC-SPL{tag}.pdf", res=l.a$resDir, tag=fig_tag)
+tic_new <- glue::glue("{out}/TIC-SPL{tag}.pdf", out=l.a$outDir, tag=fig_tag)
+file.copy(tic_fig,l.a$outDir)
+file.rename(tic_new, paste0(l.a$outDir,'/Figure S2-Sample TIC.pdf'))
 
 
 ## copy other tables for small

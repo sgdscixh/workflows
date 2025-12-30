@@ -1,0 +1,80 @@
+
+## 英文参考步骤
+
+### 样本处理步骤(Metabolites Extraction)
+
+***固体样本处理步骤***
+
+After being vacuum freeze-dried, the samples were ground into a powder using a ball mill.Solid samples were placed on dry ice and kept frozen while being prepared. Exactly of the powdered sample was weighed into a 2 mL centrifuge tube. Then, 600 μL of extraction solution (methanol: water: hydrochloric acid, v:v:v = 50:50:1) was added. The mixture was vortexed for 5 minutes at room temperature, followed by ultrasonic extraction for 5 minutes (with an appropriate amount of ice added to the ultrasonic bath). After centrifugation at 4°C and 12,000 rpm for 5 minutes, the supernatant was transferred to a new 2 mL centrifuge tube. Next, 400 μL of extraction solution (methanol: water: hydrochloric acid, v:v:v = 50:50:1) was added to the pellet, vortexed for 5 minutes, and subjected to another 5 minutes ultrasonic extraction. The sample was then centrifuged again under the same conditions (4°C, 12,000 rpm, 5 minutes). All of the supernatant from this step was combined with the first extract solution. The combined extract was filtered through a membrane into a brown injection vial for UHPLC-MS-MS analysis[1,2].
+
+
+
+### 标准溶液配制 (Standard Solution Preparation)
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 1 mg/mL. An aliquot of each of the stock solutions was transferred to a 5 mL volumetric flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution.
+
+Calibration solutions were subjected to UHPLC-MRM analysis using the methods described above. Figure S1 summarizes the results for the calibration curves where y is the the peak area of the target compound , and x is the concentration (ng/mL) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80 -120%. Detailed calibration curves for individual analytes are shown in Figure S1.
+
+### 仪器条件 (Instrument Parameter)
+
+
+The UHPLC separation was carried out using Agilent 1290 UPLC, equipped with a Waters ACQUITY CSH C18 (150×2.1mm,1.7μm). The mobile phase A was 0.5% formic acid in water, and the mobile phase B was 0.5% formic acid in acetonitrile. The column temperature was set at 40 °C. The auto-sampler temperature was set at 4 °C and the injection volume was 5 μL.
+
+Triple Quad 6500+ Mass Spectrometer (SCIEX, USA), equipped with an electrospray ionization interface, was applied for assay development. Typical ion source parameters were: Ion Spray Voltage = +5500, Ion Source Gas 1=50 psi, Ion Source Gas 2=60 psi, Temperature = 550 °C, Curtain Gas=40 psi.
+
+The MRM parameters for each of the targeted analytes were optimized using flow injection analysis, by injecting the standard solutions of the individual analytes, into the ESI source of the mass spectrometer. Several the most sensitive transitions were used in the MRM mode to optimize the collision energy for each Q1/Q3 pair (Table S2). Among the optimized MRM transitions for each analyte, the Q1/Q3 pair that showed the highest sensitivity and selectivity was selected as the "quantifier" for quantitation. The additional transitions acted as “qualifier” for the purpose of verifying the identity of the target analytes. Analyst (version 1.7.3, SCIEX) and Biotree Biobud (version 2.0.3) were employed for MRM data acquisition.
+
+
+### 标准曲线 (Standard Solution Preparation)
+
+Stock solutions were individually prepared by dissolving or diluting each standard substance to give a final concentration of 10 mmol/L. An aliquot of each of the stock solutions was transferred to a 5 mL flask to form a mixed working standard solution. A series of calibration standard solutions were then prepared by stepwise dilution of this mixed standard solution (containing isotopically-labelled internal standard mixture in identical concentrations with the samples).
+
+Calibration solutions were subjected to UHPLC-MRM analysis using the methods described above. Figure S1-Calibration summarizes the results for the calibration curves where y i s the ratio of the peak area of the target compound to the corresponding internal standard, and x i s the concentration (ng/mL) for analyte. The level was excluded from the calibration if the accuracy of calibration was not within 80 -120%. Detailed calibration curves for individual analytes are shown in Figure S1-Calibration.
+
+
+### 方法检出限及定量限 (LOD and LOQ)
+
+The calibration standard solution was diluted stepwise, with a dilution factor of 2. These standard solutions were analyzed to UHPLC-MS/MS analysis. The signal-to-noise ratios (S/N) were used to determine the lower limits of detection (LODs) and lower limits of quantitation (LOQs). The LODs and LOQs were defined as the analyte concentrations that led to peaks with signal-to-noise ratios (S/N) of 3 and 10, respectively, according to the US FDA guideline for bioanalytical method validation.
+
+```{r acc-rsd-en, eval=l.a$has_qc}
+"
+### 方法精密度及准确度(Precision and Accuracy)
+
+The precision of the quantitation was measured as the relative standard deviation (RSD), determined by injecting analytical replicates of a QC sample. The accuracy of quantitation was calculated as [(mean observed concentration) / (Theoretical concentration)] × 100%.
+" %>% pander()
+
+```
+
+
+### 色谱分离 (LC Separation)
+
+The extracted ion chromatographs (EICs) plots from a standard solution and a sample of the targeted analytes under the optimal conditions. As can be seen from this figure,  (i) all of the analytes showed symmetrical peak shapes,  (ii) baseline separations were obtained, (iii) and the retention time and peak shapes for all of the analytes showed good correlation between the standard solution and the real sample.
+
+### 方法定量参数 (Analysis Metrics)
+
+Table S3 lists the resulting lower-limits of detection and quantitation  (LODs and LOQs), and the LODs ranged from `r llod_0` to `r llod_1` ng/mL, the LOQs ranged from `r lloq_0` to `r lloq_1` ng/mL for all the analytes. Correlation coefficients (R2) of regression fitting were above `r scores` for all the analytes, indicating a good quantitative relationship between the MS responses and the analyte concentrations, which was satisfying for targeted metabolomics analysis (see Figure S1-Calibration).
+
+
+```{r qc-acc-en, echo=FALSE, warning=FALSE, eval=l.a$has_qc}
+pander(msg_en)
+```
+
+
+The analysis metrics indicated that the method allowed accurate quantitation of the targeted metabolites in the biological sample, in the concentration range described as above.
+
+
+### 样本中目标代谢物检测结果(Quantification Results)
+
+
+The quantitative results of each metabolite in the sample Table S5. 
+
+In the formula : CC (calculated concentration, nmol/L) was the calculated concentration, that is, the sample data was substituted for the standard curve to calculate the concentration. CM (Metabolite Concentration, nmol/g) is the standard metabolite content in the sample, which is equal to the calculated concentration CC (calculated Concentration, nmol/L) multiplied by the extract volume VE (Extration Volumn, μL), multiplied by the dilution factor DF (Dilution Factor), divided by the sample mass m (mg), divided by CF (Concentration Factor), divided by 1000 (unit conversion, mg / g). 0 indicates that the compound was not detected in the sample.
+
+
+
+
+
+
+
+
+

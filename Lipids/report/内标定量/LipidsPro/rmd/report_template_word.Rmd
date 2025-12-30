@@ -103,29 +103,28 @@ custom_name = l.a$head_msg["客户姓名", 1]
 ## 实验结果
 ```{r results, echo=FALSE, include=FALSE}
 
-# 精确替换:匹配 __pos 后的所有字符(包括数字)
-tic_cap_1 <- glue::glue("样品 {spl} TIC图({grp})", spl=spl_name_sp %>% gsub("__pos\\d*", "__neg", .), grp=grp_types[1] %>% gsub("__","",.))
+tic_cap_1 <- glue::glue("样品 {spl} TIC图（{grp}）", spl=spl_name_sp %>% gsub(l.a$grp_type, grp_types[1], .), grp=grp_types[1] %>% gsub("__","",.))
 
-tic_cap_2 <- glue::glue("样品 {spl} TIC图({grp})", spl=spl_name_sp, grp=grp_types[2] %>% gsub("__","",.))
+tic_cap_2 <- glue::glue("样品 {spl} TIC图（{grp}）", spl=spl_name_sp %>% gsub(l.a$grp_type, grp_types[2], .), grp=grp_types[2] %>% gsub("__","",.))
 
 ```
 
 
 ### 色谱分离
 
-通过总离子流图(TIC),图`r l.a$fig_count()`-`r l.a$fig_count()`可大致看到样本出峰和响应情况,横坐标为保留时间,纵坐标为物质的响应强度。 
+通过总离子流图（TIC），图`r l.a$fig_count()`-`r l.a$fig_count()`可大致看到样本出峰和响应情况，横坐标为保留时间，纵坐标为物质的响应强度。 
 
 
 ```{r tic1, fig.cap=tic_cap_1, out.width="100%"}
 
-fig_sp_0 %>% gsub("__pos\\d*", "__neg", .) %>% include_graphics()
+fig_sp_0 %>% gsub(l.a$grp_type, grp_types[1], .) %>% include_graphics()
 
 ```
 
 
 ```{r tic2, fig.cap=tic_cap_2, out.width="100%"}
 
-fig_sp_0 %>% include_graphics()
+fig_sp_0 %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
 
 ```
 
@@ -332,7 +331,7 @@ if(length(qc_files) > 0) {
 
 ## single SPL(EXAMPLE IN REPORT)
 # NEG
-fig1_base <- fig_sp_0 %>% gsub("__pos\\d*", "__neg", .) %>% gsub("\\\\", "/", .)
+fig1_base <- fig_sp_0 %>% gsub(l.a$grp_type, grp_types[1], .) %>% gsub("\\\\", "/", .)
 fig1_base_no_ext <- sub("\\.[^.]+$", "", fig1_base)
 fig1_png <- paste0(fig1_base_no_ext, ".png")
 file.copy(fig1_png, file.path(figures_dir, basename(fig1_png)))
@@ -341,7 +340,7 @@ file.copy(fig1_svg, file.path(figures_dir, basename(fig1_svg)))
 
 
 # POS
-fig2_base <- fig_sp_0 %>% gsub("\\\\", "/", .)
+fig2_base <- fig_sp_0 %>% gsub(l.a$grp_type, grp_types[2], .) %>% gsub("\\\\", "/", .)
 fig2_base_no_ext <- sub("\\.[^.]+$", "", fig2_base)
 fig2_png <- paste0(fig2_base_no_ext, ".png")
 file.copy(fig2_png, file.path(figures_dir, basename(fig2_png)))

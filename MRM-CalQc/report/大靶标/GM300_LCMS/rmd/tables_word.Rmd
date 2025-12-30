@@ -64,13 +64,25 @@ glue::glue("{rep}/{rpt}/others/实验分析流程图.jpg", rep=l.a$repDir, rpt=l
 
 
 \newpage
-
 ### 代谢物提取
 
-```{r extract}
+```{r extract, tab.cap="样品前处理步骤", out.width="100%"}
 ## extract method based on sample type
-extract <- read.xlsx(head_path, sheet = grep(l.a$spl_type, excel_sheets(head_path)))
-if(!l.a$has_qc) extract <- extract[1:nrow(extract)-1]
+sheet_idx <- grep(l.a$spl_type, excel_sheets(head_path))
+if (length(sheet_idx) == 0) {
+  stop("在 headMessage 表中未找到样本类型 '", l.a$spl_type, "' 对应的前处理步骤 sheet，请检查 Excel 文件。")
+}
+
+extract <- read.xlsx(head_path, sheet = sheet_idx)
+
+# 检查读出来的表是否为空
+if (nrow(extract) == 0 || ncol(extract) == 0) {
+  stop("前处理步骤 sheet '", excel_sheets(head_path)[sheet_idx], "' 为空，请在 headMessage Excel 文件中添加内容。")
+}
+
+if(!l.a$has_qc && nrow(extract) > 0) {
+  extract <- extract[1:(nrow(extract)-1), , drop = FALSE]
+}
 
 # hard-remove GC-MS pretreatment block if present
 steps_col <- extract[[1]]
@@ -87,14 +99,20 @@ if (length(gc_start) > 0) {
   extract <- extract[-idx_rm, , drop = FALSE]
 }
 
+# 再次检查删除 GC-MS 段后是否为空
+if (nrow(extract) == 0 || ncol(extract) == 0) {
+  stop("删除 GC-MS 段后前处理步骤表为空，请检查 headMessage Excel 文件的内容。")
+}
+
 # keep only the single text column as '样品前处理步骤'
 text_col <- which.max(sapply(extract, function(x) sum(nchar(as.character(x)), na.rm = TRUE)))
+if (is.na(text_col) || text_col < 1 || text_col > ncol(extract)) {
+  stop("未能在前处理步骤表中找到有效的文本列，请检查 headMessage Excel 文件中该 sheet 的格式。")
+}
+
 extract <- extract[, text_col, drop = FALSE]
 colnames(extract) <- c("样品前处理步骤")
 extract <- extract[!is.na(extract[[1]]) & trimws(extract[[1]]) != "", , drop = FALSE]
 
 rownames(extract) <- NULL
-kbl(extract, "latex", booktabs = TRUE, caption = "样品前处理步骤", row.names = FALSE) %>%
-  kable_styling(latex_options="striped") %>%
-  column_spec(1, width = "15cm")
-```
+extract %>% kable()

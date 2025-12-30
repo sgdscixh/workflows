@@ -13,28 +13,13 @@ path = sys.argv[1]
 # =============== 1. 整理样本信息 =============== #
 def col_info():
     data = [['样本编号', '样本上机时的编号'],
-            ['取样量', '从原始样本中取用的量，固体样本单位为 [mg]，液体样本单位为 [μL]，细胞计数单位为[10⁷Cell]，蛋白定量单位为[mg protein]']]
+            ['取样量', '从原始样本中取用的量，固体样本单位为 [mg]，液体样本单位为 [μL]，细胞计数单位为[10⁷Cell]，蛋白定量单位为[mg protein]']] 
     return pd.DataFrame(data, columns=['列名', '说明'])
 
 
 def sample_data():
     df = pd.read_excel(fr'{path}/sampleInfo.xlsx')
-
-    # 检查必需的列是否存在
-    required_cols = ['sample_name', 'sample_type', 'sampleAmount']
-    missing_cols = [col for col in required_cols if col not in df.columns]
-    if missing_cols:
-        print(f"错误：sampleInfo.xlsx 缺少必需的列: {missing_cols}")
-        print(f"当前可用的列: {list(df.columns)}")
-        raise KeyError(f"缺少必需的列: {missing_cols}")
-
-    # 筛选 SPL 类型的样本
-    spl_data = df[df['sample_type'] == 'SPL']
-    if len(spl_data) == 0:
-        print("警告：未找到 sample_type == 'SPL' 的样本数据")
-        print(f"sample_type 的唯一值: {df['sample_type'].unique()}")
-
-    data = spl_data[['sample_name', 'sampleAmount']]
+    data = df[df['sample_type'] == 'SPL'][['sample_name', 'sampleAmount']]
     data.columns = ['进样编号', '取样量']
     return data
 
@@ -98,14 +83,7 @@ def sample_info():
         save_sheet(writer, col_info(), sheet_name='说明')
 
 
+
 if __name__ == '__main__':
-    try:
-        print('\n开始生成样本信息')
-        sample_info()
-        print('样品取用量.xlsx 生成成功！')
-    except Exception as e:
-        print(f'\n生成样品取用量.xlsx 失败！')
-        print(f'错误详情: {e}')
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+    print('\n开始生成样本信息')
+    sample_info()

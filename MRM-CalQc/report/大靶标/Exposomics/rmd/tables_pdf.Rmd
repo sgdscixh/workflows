@@ -71,7 +71,7 @@ glue::glue("{rep}/{rpt}/others/实验分析流程图.jpg", rep=l.a$repDir, rpt=l
 \newpage
 
 
-### 代谢物提取
+### 化合物提取
 
 ```{r extract}
 ## extract method based on sample type

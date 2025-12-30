@@ -24,12 +24,38 @@ pander(str)
 ```
 
 
-```{r spl-tab, position = "H"}
+<!-- ```{r spl-tab1, position = "H"}
 n_col <- ncol(data_group)
 kbl(data_group, "latex", booktabs = TRUE, caption = "样本信息表") %>%
   kable_styling(latex_options="striped") %>%
   column_spec(1, width = "5em")
 
+``` -->
+
+
+```{r spl-tab, results = "asis"}
+library(dplyr)
+library(kableExtra)
+library(purrr)
+
+max_cols <- 5          # 这里指“数值列”数量；总列数 = 1(组别) + max_cols
+id_col   <- data_group[, 1, drop = FALSE]
+value_cols <- data_group[, -1, drop = FALSE]
+n_val <- ncol(value_cols)
+
+seq(1, n_val, by = max_cols) %>%
+  walk2(seq_along(.), function(start_idx, idx) {
+    end_idx <- min(start_idx + max_cols - 1, n_val)
+    chunk <- cbind(id_col, value_cols[, start_idx:end_idx, drop = FALSE])
+
+    caption_text <- if (idx == 1) "样本信息表" else NULL
+
+    chunk %>%
+      kbl("latex", booktabs = TRUE, caption = caption_text) %>%
+      kable_styling(latex_options = "striped") %>%
+      column_spec(1, width = "5em") %>%
+      print()
+  })
 ```
 
 *注：①样本收到后，立即保存在-80℃低温冰箱中，直至实验检测；②为了更好地进行实验，对样本进行了重新编号，详细见“Table S0-样本编号对应表”（若未重新编号则无该表）。*

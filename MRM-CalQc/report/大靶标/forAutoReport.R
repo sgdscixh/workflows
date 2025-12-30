@@ -65,6 +65,13 @@ ArgsVerify <- function(inDir, repDir, repLogo) {
       code = headMessage["项目编号", 1],
       name = headMessage["客户姓名", 1]
     )
+  outDirWord <-
+    glue::glue(
+      "{wd}/{code}-Experimental-Word-Report",
+      wd = inDir,
+      code = headMessage["项目编号", 1],
+      name = headMessage["客户姓名", 1]
+    )
   outData <-
     glue::glue(
       "{wd}/{code}-RawData",
@@ -83,7 +90,7 @@ ArgsVerify <- function(inDir, repDir, repLogo) {
   outWord <-
     glue::glue(
       "{out}/{code}-{name}-{type}.docx",
-      out = outDir,
+      out = outDirWord,
       code = headMessage["项目编号", 1],
       name = headMessage["客户姓名", 1],
       type = headMessage["项目名称", 1]
@@ -104,7 +111,7 @@ ArgsVerify <- function(inDir, repDir, repLogo) {
     "是" = TRUE,
     "否" = FALSE
   ), T)
-  
+
   # 读取样本数量（SPL类型的样本个数）
   spl_count <- sample_info %>%
     filter(sample_type == "SPL") %>%
@@ -230,56 +237,56 @@ get_table_quant <- function(l.a = l.a, filename = NA, overwrite = TRUE, sheet = 
 ## 带过滤功能的定量表生成函数（基于cc_lod阈值过滤）
 get_table_quant_filtered <- function(l.a = l.a, filename = NA, overwrite = TRUE, sheet = "merge") {
   molecule_name <- l.a$molecule_name
-  
+
   # 1. 读取样本信息
   data_sampleInfo <- openxlsx::read.xlsx(paste0(l.a$inDir, "/sampleInfo.xlsx"), na.strings = "#N/A")
   qc_name_rsd <- data_sampleInfo$sample_name[data_sampleInfo$sample_type == "QC"]
   spl_names <- data_sampleInfo %>%
     filter(sample_type == "SPL") %>%
     pull(sample_name)
-  
+
   # 2. 读取LOD数据用于过滤
   calib_file <- paste0(l.a$resDir, "/Calibrators.best.xlsx")
-  lod_data <- get_table_sheet(calib_file, sheet = sheet) %>% 
+  lod_data <- get_table_sheet(calib_file, sheet = sheet) %>%
     select(`Compound Name`, cc_lod)
-  
+
   # 3. 读取原始定量数据
   data_q1 <- get_table_sheet(paste0(l.a$resDir, "/Quantification-Raw.xlsx"), sheet = sheet)
-  data_q2 <- get_table_sheet(paste0(l.a$resDir, "/Quantification-Spl.xlsx"), sheet = sheet) %>% 
+  data_q2 <- get_table_sheet(paste0(l.a$resDir, "/Quantification-Spl.xlsx"), sheet = sheet) %>%
     select(-c(molecule | contains("$")))
-  
+
   # 4. 提取QC数据（过滤前）
   if (length(qc_name_rsd) > 1) {
     data_qc <- data_q1 %>% select(c(contains("$GRP_TYPE"), !!qc_name_rsd))
   } else {
     data_qc <- NULL
   }
-  
+
   # 5. 数据质量过滤：基于cc_lod * 0.1阈值
   for (i in 1:nrow(lod_data)) {
     compound_name <- lod_data$`Compound Name`[i]
     cc_lod_value <- lod_data$cc_lod[i]
-    
+
     # 跳过NA值
     if (is.na(cc_lod_value)) next
-    
+
     # 计算阈值
     threshold <- cc_lod_value * 0.1
-    
+
     # 在下机浓度表中找到该物质所在的行
     cc_row_idx <- which(data_q1[[molecule_name]] == compound_name)
-    
+
     if (length(cc_row_idx) > 0) {
       # 遍历样本列，进行过滤
       for (spl_name in spl_names) {
         if (spl_name %in% colnames(data_q1)) {
           # 获取下机浓度值（确保是单个值）
           cc_value <- data_q1[cc_row_idx, spl_name, drop = TRUE]
-          
+
           # 如果小于阈值，赋值为0（使用length判断确保安全）
           if (length(cc_value) == 1 && !is.na(cc_value) && cc_value < threshold) {
             data_q1[cc_row_idx, spl_name] <- 0
-            
+
             # 在样本浓度表中找到对应行，同样赋值为0
             cm_row_idx <- which(data_q2[[molecule_name]] == compound_name)
             if (length(cm_row_idx) > 0 && spl_name %in% colnames(data_q2)) {
@@ -290,23 +297,23 @@ get_table_quant_filtered <- function(l.a = l.a, filename = NA, overwrite = TRUE,
       }
     }
   }
-  
+
   # 6. 处理数据：移除QC和内标列
   data_q1 <-
     data_q1 %>%
     select(-c(molecule | contains(c("$", "HQC", "MQC", "LQC")))) %>%
     select(-!!qc_name_rsd)
-  
+
   cpds <- data_q1[molecule_name] %>% unlist(use.names = FALSE)
-  
+
   # 7. 格式化列名
   colnames(data_q1)[1] <- sprintf("%s (%s)", molecule_name, l.a$unit_CC)
   colnames(data_q2)[1] <- sprintf("%s (%s)", molecule_name, l.a$unit_CM)
-  
+
   # 8. 保存为Excel文件（复用get_table_quant的格式）
   wb <- createWorkbook()
   modifyBaseFont(wb, fontSize = 10, fontName = "Arial")
-  
+
   addWorksheet(wb, sheetName = "下机浓度")
   writeDataTable(wb, sheet = 1, data_q1, keepNA = TRUE, na.string = "N/A", withFilter = FALSE)
   setColWidths(wb, sheet = 1, cols = 1, "auto")
@@ -322,7 +329,7 @@ get_table_quant_filtered <- function(l.a = l.a, filename = NA, overwrite = TRUE,
     sheet = 1, rows = 1:(nrow(data_q1) + 1), cols = 1:ncol(data_q1),
     gridExpand = TRUE, stack = TRUE, style = createStyle(valign = "center")
   )
-  
+
   addWorksheet(wb, sheetName = "样本浓度")
   writeDataTable(wb, sheet = 2, data_q2, keepNA = TRUE, na.string = "N/A", withFilter = FALSE)
   setColWidths(wb, sheet = 2, cols = 1, "auto")
@@ -338,15 +345,14 @@ get_table_quant_filtered <- function(l.a = l.a, filename = NA, overwrite = TRUE,
     sheet = 2, rows = 1:(nrow(data_q2) + 1), cols = 1:ncol(data_q2),
     gridExpand = TRUE, stack = TRUE, style = createStyle(valign = "center")
   )
-  
+
   saveWorkbook(wb, filename, overwrite = overwrite)
-  
+
   cat(sprintf("已生成过滤后的定量表：%s\n", filename))
   cat(sprintf("过滤规则：下机浓度 < cc_lod * 0.1 的数据已置为0\n"))
-  
+
   return(list(qc = data_qc, cpds = cpds))
 }
-
 get_table_calib <- function(l.a = l.a, filename = NA, sheet = "merge", sheetName = "Calibration", overwrite = TRUE) {
   molecule_name <- l.a$molecule_name
 
@@ -663,6 +669,7 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   library(gridExtra)
   l.a <<- ArgsVerify(inDir, repDir, repLogo)
   if (!file.exists(l.a$outDir)) dir.create(l.a$outDir)
+  if (!file.exists(l.a$outWord)) dir.create(dirname(l.a$outWord), recursive = TRUE)
   sprintf("chmod -R 777 '%s'", l.a$outDir) %>% system()
 
   report_rmd <- glue::glue("{rep}/{rpt}/rmd/", rep = l.a$repDir, rpt = l.a$rpt_flow)
@@ -694,6 +701,7 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   }
   glue::glue("{py} {rep}/FeishuRecord.py {ind}", py = python, rep = rep_dir, ind = l.a$inDir) %>% system()
   glue::glue("{py} {rep}/Sample_Info.py {ind} {out}", py = python, rep = rep_dir, ind = l.a$inDir, out = l.a$outDir) %>% system()
+  glue::glue("{py} {rep}/ExpDataPack.py {ind}", py = python, rep = rep_dir, ind = l.a$inDir) %>% system()
   paste0(l.a$outDir, "/rmd") %>% unlink(recursive = TRUE)
 }
 
