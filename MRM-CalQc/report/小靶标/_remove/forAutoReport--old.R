@@ -5,7 +5,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
-python <- python <- "/worksapce/.venv/bin/python"
+python <- python <- "/workspace/.venv/bin/python"
 
 #### ---- Sub functions -----#######
 
