@@ -11,6 +11,7 @@ library(kableExtra)
 library(knitr)
 library(pander)
 library(rmarkdown)
+library(tidyr)
 
 
 options(knitr.kable.NA = "")
@@ -26,6 +27,9 @@ df_cals <- l.a$get_table_calib(l.a=l.a, overwrite=FALSE, filename = l.a$outTab)
 l.a$data_qc <- qc_cpds$qc
 l.a$has_qc <- !is.null(l.a$data_qc)
 l.a$cpds <- qc_cpds$cpds
+
+## Calculate RSD and generate plots
+l.a$calculate_rsd_and_plot(l.a=l.a)
 
 
 
@@ -205,7 +209,23 @@ fig_rt_0p %>% gsub(l.a$grp_type, grp_types[2], .) %>% include_graphics()
 
 ```
 
+```{r qc-rsd-text, include=l.a$spl_count >= 12, eval=l.a$spl_count >= 12}
+rsd_f1 <- l.a$fig_count()
+rsd_f2 <- l.a$fig_count()
+glue::glue("
+QC样本的RSD分布图（图{rsd_f1}和图{rsd_f2}）：QC样本的相对标准偏差（RSD）越小，表明仪器的稳定性越好，这是反映数据质量好坏的一个重要指标。本实验QC样本中RSD≤30%的物质数量占物质检出总数的70%以上，表明仪器分析系统稳定性较好。
+") %>% pander()
+```
 
+```{r qc-rsd-1, include=l.a$spl_count >= 12, eval=l.a$spl_count >= 12, fig.cap=glue::glue("图 {rsd_f1} QC样本RSD分布图（{grp}）", grp=grp_types[1]), out.width="100%"}
+fig_rsd_1 <- sprintf("%s/figures/QC-RSD-%s.png", l.a$resDir, grp_types[1])
+if(file.exists(fig_rsd_1)) include_graphics(fig_rsd_1)
+```
+
+```{r qc-rsd-2, include=l.a$spl_count >= 12, eval=l.a$spl_count >= 12, fig.cap=glue::glue("图 {rsd_f2} QC样本RSD分布图（{grp}）", grp=grp_types[2]), out.width="100%"}
+fig_rsd_2 <- sprintf("%s/figures/QC-RSD-%s.png", l.a$resDir, grp_types[2])
+if(file.exists(fig_rsd_2)) include_graphics(fig_rsd_2)
+```
 
 ```{r qc-newpage, include=l.a$spl_count >= 12, eval=l.a$spl_count >= 12, results='asis'}
 cat("\\newpage\n\n")

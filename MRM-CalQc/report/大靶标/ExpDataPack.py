@@ -50,7 +50,7 @@ def detect_scheme(product_type: str) -> str | None:
 
     # 大高靶方案一：AQ700、AQ-血液500、AQ-1000（RP+HILIC，带RT图）
     scheme_aq_rp_hilic = {
-        "AQ700", "AQ-血液500", "AQ-1000", "AQ1000",
+        "AQ700", "AQ-血液500", "AQ-1000", "AQ1000","AQ1100"
     }
 
     # 大高靶方案二：肠菌300（GCMS+LCMS 或仅 LCMS）
@@ -348,6 +348,9 @@ def pack_scheme_aq_rp_hilic(in_dir: str, exp_dir: str, grp_type: str | None):
       ├─ RP/QC/QC.png, SPL/SPL.png, RT/RT-Control-*.png
       ├─ QC-corrplot-HILIC.jpg
       ├─ QC-corrplot-RP.jpg
+      ├─ QC-RSD-HILIC.png
+      ├─ QC-RSD-RP.png
+      ├─ QC-corrplot-LCMS.jpg
       └─ Quantification-IS.xlsx
     """
     if not grp_type:
@@ -360,7 +363,9 @@ def pack_scheme_aq_rp_hilic(in_dir: str, exp_dir: str, grp_type: str | None):
     for grp in grps:
         try:
             import re
-            grp_in_dir = re.sub(grp_type, grp, in_dir)
+            # 修复：使用精确的路径替换，避免正则匹配问题
+            pattern = '|'.join([re.escape(g.strip()) for g in grp_type.split('|')])
+            grp_in_dir = re.sub(pattern, grp, in_dir)
         except Exception:
             grp_in_dir = in_dir
 
@@ -377,7 +382,9 @@ def pack_scheme_aq_rp_hilic(in_dir: str, exp_dir: str, grp_type: str | None):
     for grp in grps:
         try:
             import re
-            grp_in_dir = re.sub(grp_type, grp, in_dir)
+            # 修复：使用精确的路径替换，避免正则匹配问题
+            pattern = '|'.join([re.escape(g.strip()) for g in grp_type.split('|')])
+            grp_in_dir = re.sub(pattern, grp, in_dir)
         except Exception:
             grp_in_dir = in_dir
 
@@ -392,12 +399,37 @@ def pack_scheme_aq_rp_hilic(in_dir: str, exp_dir: str, grp_type: str | None):
             shutil.copy2(qc_corrplot_src, dest_path)
         else:
             print(f"ExpDataPack: 未找到 QC-corrplot 图：{qc_corrplot_src}")
+    # qc RSD 图
+    for grp in grps:
+        try:
+            import re
+            # 修复：使用精确的路径替换，避免正则匹配问题
+            # 将 grp_type 中的所有分组替换为当前 grp
+            pattern = '|'.join([re.escape(g.strip()) for g in grp_type.split('|')])
+            grp_in_dir = re.sub(pattern, grp, in_dir)
+        except Exception:
+            grp_in_dir = in_dir
+
+        results_dir = os.path.join(grp_in_dir, "results")
+        # 源文件已经带有 grp 后缀，直接查找完整文件名
+        src_filename = f"QC-RSD-{grp}.png"
+        qc_rsd_src = os.path.join(results_dir, "figures", src_filename)
+        if os.path.isfile(qc_rsd_src):
+            dest_path = os.path.join(exp_dir, src_filename)
+            print(
+                f"ExpDataPack: 复制 QC-RSD：{qc_rsd_src} -> {dest_path}")
+            shutil.copy2(qc_rsd_src, dest_path)
+        else:
+            print(f"ExpDataPack: 未找到 QC-RSD 图：{qc_rsd_src}")
+    
 
     # Quantification-IS.xlsx（只需一份，从第一个 grp 取）
     first_grp = grps[0]
     try:
         import re
-        first_grp_dir = re.sub(grp_type, first_grp, in_dir)
+        # 修复：使用精确的路径替换
+        pattern = '|'.join([re.escape(g.strip()) for g in grp_type.split('|')])
+        first_grp_dir = re.sub(pattern, first_grp, in_dir)
     except Exception:
         first_grp_dir = in_dir
 

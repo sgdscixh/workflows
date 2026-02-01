@@ -657,6 +657,113 @@ latex_escape <- function(x) {
 }
 
 
+## Calculate RSD and plot distribution for QC and RTQC samples
+calculate_rsd_and_plot <- function(l.a = l.a) {
+  
+  # 读取样本信息
+  spl_info <- readxl::read_excel(paste0(l.a$inDir, "/sampleInfo.xlsx"), sheet = 1)
+  
+  # 获取体系类型
+  grp_types <- l.a$grp_type %>% stringi::stri_split(fixed = '|') %>% unlist()
+  sample_types <- c("QC", "RTQC")
+  
+  # 循环处理每个体系和样本类型
+  for (grp_type in grp_types) {
+    
+    # 根据分组类型替换路径（参考FeishuRecord.py的做法）
+    grp_dir <- gsub(pattern = l.a$grp_type, replacement = grp_type, x = l.a$inDir)
+    grp_res_dir <- paste0(grp_dir, "/results")
+    
+    # 按分组读取long数据
+    long_path <- paste0(grp_res_dir, "/quantify_raw_long.csv")
+    if (!file.exists(long_path)) next
+    long_data <- read.csv(long_path)
+    
+    # 读取该分组的物质列表
+    quant_raw_path <- paste0(grp_res_dir, "/Quantification-Raw.xlsx")
+    if (!file.exists(quant_raw_path)) next
+    quant_raw <- get_table_sheet(quant_raw_path, sheet = "merge")
+    com_list <- quant_raw$molecule
+    
+    # 创建figures目录
+    fig_dir <- paste0(grp_res_dir, "/figures")
+    if (!dir.exists(fig_dir)) dir.create(fig_dir, recursive = TRUE)
+    
+    for (spl_type in sample_types) {
+      
+      # 筛选样本名称
+      spl_names <- spl_info %>% 
+        filter(sample_type == spl_type) %>% 
+        pull(sample_name)
+      if (length(spl_names) == 0) next
+      
+      # 筛选数据：添加product_rank筛选和去重
+      df <- long_data %>%
+        filter(
+          molecule %in% com_list,
+          sample_name %in% spl_names,
+          product_rank == 1
+        ) %>%
+        distinct(molecule, transitionId, sample_name, .keep_all = TRUE)
+      if (nrow(df) == 0) next
+      
+      # 计算RSD
+      rsd_data <- df %>%
+        select(molecule, sample_name, g_auc) %>%
+        tidyr::pivot_wider(names_from = sample_name, values_from = g_auc) %>%
+        rowwise() %>%
+        mutate(
+          mean_val = mean(c_across(-molecule), na.rm = TRUE),
+          sd_val = sd(c_across(-molecule), na.rm = TRUE),
+          `RSD(%)` = ifelse(mean_val == 0, NA, (sd_val / mean_val) * 100)
+        ) %>%
+        ungroup() %>%
+        select(molecule, everything(), -mean_val, -sd_val)
+      
+      # 保存数据到对应分组目录
+      wb <- createWorkbook()
+      modifyBaseFont(wb, fontSize = 10, fontName = "Arial")
+      addWorksheet(wb, sheetName = "RSD_Data")
+      writeData(wb, sheet = 1, rsd_data)
+      setColWidths(wb, sheet = 1, cols = 1:ncol(rsd_data), "auto")
+      saveWorkbook(wb, sprintf("%s/%s-RSD-%s.xlsx", grp_res_dir, spl_type, grp_type), overwrite = TRUE)
+      
+      # 提取RSD值
+      rsd_values <- na.omit(rsd_data$`RSD(%)`)
+      if (length(rsd_values) < 2) next
+      
+      # 绘图
+      sorted_rsd <- sort(rsd_values)
+      plot_df <- data.frame(
+        RSD = sorted_rsd,
+        Cumulative = (1:length(sorted_rsd)) / length(sorted_rsd) * 100
+      )
+      
+      p <- ggplot(plot_df, aes(x = RSD, y = Cumulative)) +
+        geom_line(color = "#f39c12", size = 1.5) +
+        geom_vline(xintercept = 30, linetype = "dashed", color = "lightgray", size = 1) +
+        scale_x_continuous(breaks = c(0, 30, 50, 100), limits = c(-5, 150)) +
+        scale_y_continuous(breaks = seq(0, 100, 10), limits = c(-2, 105)) +
+        labs(x = "RSD (%)", y = "% of peaks") +
+        theme_bw() +
+        theme(
+          axis.title = element_text(size = 18),
+          axis.text = element_text(size = 16),
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          axis.line = element_line(size = 1.5)
+        )
+      
+      # 保存图片到对应分组的figures目录
+      ggsave(sprintf("%s/%s-RSD-%s.png", fig_dir, spl_type, grp_type), p, width = 8, height = 8, dpi = 300)
+      ggsave(sprintf("%s/%s-RSD-%s.pdf", fig_dir, spl_type, grp_type), p, width = 8, height = 8)
+    }
+  }
+  
+  return(invisible(NULL))
+}
+
+
 ## ---------------- help functions end ---------------------##
 
 
@@ -685,6 +792,7 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   l.a$copy_file <<- copy_file
   l.a$fig_count <<- fig_count
   l.a$latex_escape <<- latex_escape
+  l.a$calculate_rsd_and_plot <<- calculate_rsd_and_plot
 
 
   # Sys.setenv(RSTUDIO_PANDOC ="/usr/lib/rstudio-server/bin/quarto/bin/tools/x86_64/pandoc")
@@ -704,6 +812,15 @@ reportAssist <- function(inDir = "", repDir = "", repLogo = T) {
   glue::glue("{py} {rep}/ExpDataPack.py {ind}", py = python, rep = rep_dir, ind = l.a$inDir) %>% system()
   paste0(l.a$outDir, "/rmd") %>% unlink(recursive = TRUE)
 }
+
+
+
+
+
+
+
+
+
 
 
 #### Run report -----------
